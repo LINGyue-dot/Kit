@@ -5,12 +5,14 @@
 #include <QStackedLayout>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include<QLabel>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
+
 //     //设置主界面大小
-    setFixedSize(840,625);
+    setFixedSize(1500,900);
 //    // 设置无边框
 //    setWindowFlags(Qt::FramelessWindowHint);
 //    // 背景透明
@@ -27,6 +29,8 @@ Widget::Widget(QWidget *parent)
     mainLayout->addLayout(stackLayout);
     setLayout(mainLayout);
 //*********************************点击按钮页面切换**********************************//
+
+
 }
 
 Widget::~Widget()
