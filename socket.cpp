@@ -10,7 +10,6 @@
 /*************************************/
 #include <QTextStream>
 #include <stdio.h>
-
 /*************************************/
 
 
@@ -105,10 +104,10 @@ bool Socket::Connect(char* serverIp, unsigned short serverPort)
  * @param len
  * @return
  */
-int Socket::Send(char* writeBuf, int len)
+int Socket::Send(Socket::CardShare p)
 {
     // 向服务端发送数据
-    int nRet = send(m_Client, writeBuf, len, 0);
+    int nRet =send(m_Client, (char*)&p, sizeof(CardShare), 0);
     if (nRet <= 0)
     {
         // 无法向服务器发送数据

@@ -23,13 +23,25 @@ Two::Two(QWidget *parent) :
     clientSockt.Connect("127.0.0.1",8000);
 
     Socket::CardShare p2=clientSockt.FirestRead();
-    for(int i=0;i<=9;i++)
+    for(int i=0;i<17;i++)
         cout<<p2.cardArr[i]<<"+++++++++++++++++"<<endl;
     cout<< p2.number<<endl;
-//    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
-//    string c;
-//    clientSockt.Read(c);
-    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
+    //    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
+    //    string c;
+    //    clientSockt.Read(c);
+    Socket::CardShare p;
+    p.cardArr[0]= 1;
+    p.cardArr[1]=2;
+    p.number =3;
+    clientSockt.Send(p); // 发送
+    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
+    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
+    Socket::CardShare p1;
+    p1.cardArr[0]= 5;
+    p1.cardArr[1]=2;
+    p1.number =55;
+    cout<< p1.cardArr[0]<<p1.number<<"=+++++++++"<<endl;
+    cout<<"Send:"<<clientSockt.Send(p1);
     //*******************************连接服务器****************************************//
     //================================载入图片=========================================//
 
@@ -85,7 +97,6 @@ Two::Two(QWidget *parent) :
         int h=myarray[i]->height();
         int w=myarray[i]->width();
         QPixmap map=pixmap.scaled(w,h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
-
         myarray[i]->setPixmap(map);
     }
     //================================载入图片=========================================//0
