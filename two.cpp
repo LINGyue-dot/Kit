@@ -7,24 +7,13 @@
 #include <QTimer>
 #include <stdio.h>
 
-mylabel *myarray[20];
-int position[20];
-
-Socket clientSockt;
-Socket::CardShare p2;
-
-
 Two::Two(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Two)
 {
 
     ui->setupUi(this);
-    /**********************************线程***************************************/
-    // 分配空间
-    thread =new MyThread(this);
-    connect(thread,&MyThread::IsDone,this,&Two::DeadDone);
-    /**********************************线程***************************************/
+
 
     //*******************************连接服务器****************************************/
     QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
@@ -52,6 +41,9 @@ Two::Two(QWidget *parent) :
     //    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
     //    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
     //*******************************连接服务器****************************************//
+
+
+
     //================================载入图片=========================================//
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
@@ -81,7 +73,11 @@ Two::Two(QWidget *parent) :
     }
 
     //================================载入图片=========================================//0
-
+    /**********************************线程***************************************/
+    // 分配空间
+    thread =new MyThread(this);
+    connect(thread,&MyThread::IsDone,this,&Two::DeadDone);
+    /**********************************线程***************************************/
 
 }
 
@@ -159,10 +155,24 @@ void Two::on_pushButton_3_clicked()
  */
 void Two::on_pushButton_4_clicked(){
     thread->start(); // 开启线程
-    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
+    // 定时器
+    myTimer = new QTimer(this);
+    myTimer->start(100); // 设置100ms，定时触发timeout型号
+    connect(myTimer,&QTimer::timeout,
+            [=]()
+    {
+        p2=clientSockt.FirestRead();
+        if(p2.cardArr[0]!=0)
+            myTimer->stop();
+    }
+    );
+    //
+//    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
     qDebug()<<p2.cardArr[1]<<endl;
     ///
 }
+
+
 
 
 

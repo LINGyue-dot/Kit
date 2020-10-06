@@ -3,6 +3,8 @@
 
 #include "mythread.h"
 #include <QWidget>
+#include  "socket.h"
+#include <mylabel.h>
 
 namespace Ui {
 class Two;
@@ -20,6 +22,7 @@ public:
     ~Two();
 
     void DeadDone(); // 线程结束处理槽函数
+    void TimeOut(); // 定时器结束处理
 
 
 private slots:
@@ -34,6 +37,13 @@ private:
     Ui::Two *ui;
 
     MyThread *thread;
+    QTimer *myTimer;
+
+    mylabel *myarray[20];
+    int position[20];
+
+    Socket clientSockt;
+    Socket::CardShare p2;
 };
 
 #endif // TWO_H
