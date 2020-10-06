@@ -22,7 +22,7 @@ public:
     ~Two();
 
     void DeadDone(); // 线程结束处理槽函数
-    void TimeOut(); // 定时器结束处理
+//    void TimeOut(); // 定时器结束处理
 
 
 private slots:

@@ -14,6 +14,18 @@ Two::Two(QWidget *parent) :
 
     ui->setupUi(this);
 
+    // 定时器
+//    myTimer = new QTimer(this);
+//    myTimer->start(100); // 设置100ms，定时触发timeout型号
+//    connect(myTimer,&QTimer::timeout,
+//            [=]()
+//    {
+//        p2=clientSockt.FirestRead();
+//        if(p2.cardArr[0]!=0)
+//            myTimer->stop();
+//    }
+//    );
+
 
     //*******************************连接服务器****************************************/
     QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
@@ -155,19 +167,13 @@ void Two::on_pushButton_3_clicked()
  */
 void Two::on_pushButton_4_clicked(){
     thread->start(); // 开启线程
-    // 定时器
-    myTimer = new QTimer(this);
-    myTimer->start(100); // 设置100ms，定时触发timeout型号
-    connect(myTimer,&QTimer::timeout,
-            [=]()
-    {
+    //
+    while(1){
         p2=clientSockt.FirestRead();
         if(p2.cardArr[0]!=0)
-            myTimer->stop();
-    }
-    );
-    //
-//    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
+            break;
+        QThread::sleep(1);
+    }//第一次接收 ，即发牌
     qDebug()<<p2.cardArr[1]<<endl;
     ///
 }
