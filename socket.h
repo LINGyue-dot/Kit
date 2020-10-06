@@ -16,7 +16,7 @@ public:
     };
     Socket():m_Client(INVALID_SOCKET){} //将socket设置成无效套接字
     bool Init();
-//    void SettingTimeout(int timeout);
+    void SettingTimeout(int timeout);
     bool Connect(char* host, unsigned short port);
     int Send(Socket::CardShare p);
     CardShare FirestRead();

@@ -57,15 +57,15 @@ bool Socket::Init()
  * @brief Socket::SettingTimeout 时间设置
  * @param timeout
  */
-//void Socket::SettingTimeout(int timeout)
-//{
-//    int milSecond = 0;           //超时时限（毫秒）
-//    milSecond = timeout * 1000;
-//    // 设置发送时限
-//    setsockopt(m_Client, SOL_SOCKET, SO_SNDTIMEO, (char*)&milSecond, sizeof(int));
-//    // 设置接收时限
-//    setsockopt(m_Client, SOL_SOCKET, SO_RCVTIMEO, (char*)&milSecond, sizeof(int));
-//}
+void Socket::SettingTimeout(int timeout)
+{
+    int milSecond = 0;           //超时时限（毫秒）
+    milSecond = timeout * 1000;
+    // 设置发送时限
+    setsockopt(m_Client, SOL_SOCKET, SO_SNDTIMEO, (char*)&milSecond, sizeof(int));
+    // 设置接收时限
+    setsockopt(m_Client, SOL_SOCKET, SO_RCVTIMEO, (char*)&milSecond, sizeof(int));
+}
 
 /**
  * @brief Socket::Connect 连接

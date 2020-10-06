@@ -12,6 +12,7 @@ SOURCES += \
     compare.cpp \
     main.cpp \
     mylabel.cpp \
+    mythread.cpp \
     one.cpp \
     socket.cpp \
     two.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     compare.h \
     mylabel.h \
+    mythread.h \
     one.h \
     socket.h \
     two.h \

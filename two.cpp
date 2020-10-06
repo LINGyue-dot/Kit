@@ -2,11 +2,17 @@
 #include "ui_two.h"
 #include "socket.h"
 
+#include <QDebug>
 #include <QTextStream>
+#include <QTimer>
 #include <stdio.h>
 
 mylabel *myarray[20];
 int position[20];
+
+Socket clientSockt;
+Socket::CardShare p2;
+
 
 Two::Two(QWidget *parent) :
     QWidget(parent),
@@ -14,37 +20,39 @@ Two::Two(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    /**********************************线程***************************************/
+    // 分配空间
+    thread =new MyThread(this);
+    connect(thread,&MyThread::IsDone,this,&Two::DeadDone);
+    /**********************************线程***************************************/
 
-    //*******************************连接服务器****************************************//
+    //*******************************连接服务器****************************************/
     QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
 
-    Socket clientSockt;
+    //    Socket clientSockt;
     clientSockt.Init();
     clientSockt.Connect("127.0.0.1",8000);
+    clientSockt.SettingTimeout(1); // 一秒后自动断开
+    //    Socket::CardShare p2;
+    //    connect(p2, SIGNAL(signal()), this, SLOT(slot()));
 
-    Socket::CardShare p2=clientSockt.FirestRead();
-    for(int i=0;i<17;i++)
-        cout<<p2.cardArr[i]<<"+++++++++++++++++"<<endl;
-    cout<< p2.number<<endl;
+//    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
+    //    for(int i=0;i<17;i++)
+    //        cout<<p2.cardArr[i]<<"+++++++++++++++++"<<endl;
+    //    cout<< p2.number<<endl;
     //    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
     //    string c;
     //    clientSockt.Read(c);
+
     Socket::CardShare p;
     p.cardArr[0]= 1;
     p.cardArr[1]=2;
     p.number =3;
-    clientSockt.Send(p); // 发送
-    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
-    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
-    Socket::CardShare p1;
-    p1.cardArr[0]= 5;
-    p1.cardArr[1]=2;
-    p1.number =55;
-    cout<< p1.cardArr[0]<<p1.number<<"=+++++++++"<<endl;
-    cout<<"Send:"<<clientSockt.Send(p1);
+    //    clientSockt.Send(p); // 发送
+    //    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
+    //    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
     //*******************************连接服务器****************************************//
     //================================载入图片=========================================//
-
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
     myarray[2]=ui->label_3;
@@ -71,34 +79,7 @@ Two::Two(QWidget *parent) :
         position[i]=m+25;
         m=m+25;
     }
-    QString s[17];
-    s[0]=":/pukeimage1\\1.jpg";
-    s[1]=":/pukeimage1\\2.jpg";
-    s[2]=":/pukeimage1\\3.jpg";
-    s[3]=":/pukeimage1\\4.jpg";
-    s[4]=":/pukeimage1\\5.jpg";
-    s[5]=":/pukeimage1\\6.jpg";
-    s[6]=":/pukeimage1\\7.jpg";
-    s[7]=":/pukeimage1\\8.jpg";
-    s[8]=":/pukeimage1\\9.jpg";
-    s[9]=":/pukeimage1\\10.jpg";
-    s[10]=":/pukeimage1\\11.jpg";
-    s[11]=":/pukeimage1\\12.jpg";
-    s[12]=":/pukeimage1\\13.jpg";
-    s[13]=":/pukeimage1\\14.jpg";
-    s[14]=":/pukeimage1\\15.jpg";
-    s[15]=":/pukeimage1\\16.jpg";
-    s[16]=":/pukeimage1\\17.jpg";
-    for (int i=0;i<10 ;i++ ) {
-        QImage image;
-        image.load(s[p2.cardArr[i]+1+1]);
-        QPixmap pixmap=QPixmap::fromImage(image);
-        myarray[i]->setPixmap(pixmap);
-        int h=myarray[i]->height();
-        int w=myarray[i]->width();
-        QPixmap map=pixmap.scaled(w,h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
-        myarray[i]->setPixmap(map);
-    }
+
     //================================载入图片=========================================//0
 
 
@@ -142,6 +123,18 @@ void Two::on_pushButton_2_clicked()
             myarray[i]->exist=2;
         }
     }
+    /********************************发送数据到服务器上*************************************/
+    Socket::CardShare p1;
+    p1.cardArr[0]= 5;
+    p1.cardArr[1]=2;
+    p1.number =55;
+    clientSockt.Send(p1); // 发送
+    /********************************发送数据到服务器上*************************************/
+    Socket::CardShare p2=clientSockt.FirestRead(); // 接收
+    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
+    /********************************接收数据从服务器上*************************************/
+
+    /********************************接收数据从服务器上*************************************/
 }
 //============================================出牌=====================================//
 
@@ -159,3 +152,54 @@ void Two::on_pushButton_3_clicked()
         }
     }
 }
+
+
+/**
+ * @brief Two::on_pushButton_4_clicked 开始游戏开启线程 连接服务器
+ */
+void Two::on_pushButton_4_clicked(){
+    thread->start(); // 开启线程
+    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
+    qDebug()<<p2.cardArr[1]<<endl;
+    ///
+}
+
+
+
+
+/*************************************线程操作***************************/
+/**
+ * @brief Two::DeadDone 线程结束操作
+ */
+void Two::DeadDone(){
+    qDebug()<<"+++++++++++"<<p2.cardArr[0]<<p2.cardArr[1]<<endl;
+    QString s[17];
+    s[0]=":/pukeimage1\\1.jpg";
+    s[1]=":/pukeimage1\\2.jpg";
+    s[2]=":/pukeimage1\\3.jpg";
+    s[3]=":/pukeimage1\\4.jpg";
+    s[4]=":/pukeimage1\\5.jpg";
+    s[5]=":/pukeimage1\\6.jpg";
+    s[6]=":/pukeimage1\\7.jpg";
+    s[7]=":/pukeimage1\\8.jpg";
+    s[8]=":/pukeimage1\\9.jpg";
+    s[9]=":/pukeimage1\\10.jpg";
+    s[10]=":/pukeimage1\\11.jpg";
+    s[11]=":/pukeimage1\\12.jpg";
+    s[12]=":/pukeimage1\\13.jpg";
+    s[13]=":/pukeimage1\\14.jpg";
+    s[14]=":/pukeimage1\\15.jpg";
+    for (int i=0;i<17 ;i++ ) {
+        QImage image;
+        image.load(s[p2.cardArr[i]+1+1]);
+        QPixmap pixmap=QPixmap::fromImage(image);
+        myarray[i]->setPixmap(pixmap);
+        int h=myarray[i]->height();
+        int w=myarray[i]->width();
+        QPixmap map=pixmap.scaled(w,h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+        myarray[i]->setPixmap(map);
+    }
+}
+
+
+/*************************************线程操作***************************/
