@@ -2,9 +2,10 @@
 #define TWO_H
 
 #include "mythread.h"
-#include <QWidget>
+#include "Struct.h"
 #include  "socket.h"
-#include <mylabel.h>
+#include "mylabel.h"
+#include <QWidget>
 
 namespace Ui {
 class Two;
@@ -17,13 +18,23 @@ class Two : public QWidget
 signals:
     void display(int number);
 
+    void startThread(); // 启动子线程的信号
+
+    void sendMessage(CardShare p); // 发送消息的信号
+
+    void waitRecv();
+
 public:
     explicit Two(QWidget *parent = nullptr);
     ~Two();
 
-    void DeadDone(); // 线程结束处理槽函数
-//    void TimeOut(); // 定时器结束处理
+    void dealSignal(CardShare p); // 线程结束处理信号
 
+    void dealClose(); // 处理关闭窗口
+
+    void afterSend(); // 发送成功处理
+
+    void afterGet(CardShare p); //接收成功后操作
 
 private slots:
     void on_pushButton_clicked();
@@ -36,14 +47,15 @@ private slots:
 private:
     Ui::Two *ui;
 
-    MyThread *thread;
+    MyThread *myT;
+    QThread *thread;
     QTimer *myTimer;
 
     mylabel *myarray[20];
     int position[20];
 
     Socket clientSockt;
-    Socket::CardShare p2;
+    CardShare p2;
 };
 
 #endif // TWO_H

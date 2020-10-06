@@ -4,6 +4,7 @@
 
 #include <QDebug>
 #include <QTextStream>
+#include <QThread>
 #include <QTimer>
 #include <stdio.h>
 
@@ -31,9 +32,9 @@ Two::Two(QWidget *parent) :
     QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
 
     //    Socket clientSockt;
-    clientSockt.Init();
-    clientSockt.Connect("127.0.0.1",8000);
-    clientSockt.SettingTimeout(1); // 一秒后自动断开
+//    clientSockt.Init();
+//    clientSockt.Connect("127.0.0.1",8000);
+//    clientSockt.SettingTimeout(1); // 一秒后自动断开
     //    Socket::CardShare p2;
     //    connect(p2, SIGNAL(signal()), this, SLOT(slot()));
 
@@ -43,12 +44,7 @@ Two::Two(QWidget *parent) :
     //    cout<< p2.number<<endl;
     //    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
     //    string c;
-    //    clientSockt.Read(c);
-
-    Socket::CardShare p;
-    p.cardArr[0]= 1;
-    p.cardArr[1]=2;
-    p.number =3;
+    //    clientSockt.Read(c)
     //    clientSockt.Send(p); // 发送
     //    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
     //    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
@@ -86,9 +82,30 @@ Two::Two(QWidget *parent) :
 
     //================================载入图片=========================================//0
     /**********************************线程***************************************/
-    // 分配空间
-    thread =new MyThread(this);
-    connect(thread,&MyThread::IsDone,this,&Two::DeadDone);
+    // 动态分配空间, 不能指定父对象
+    myT =new MyThread;
+
+    //创建子线程
+    thread =new QThread(this);
+
+    //把自定义的线程加入到子线程中
+    myT->moveToThread(thread);
+
+    // 子线程执行完毕 发出mySignal信号 然后执行 dealSignal 发牌
+    connect(myT,&MyThread::mySignal,this,&Two::dealSignal,Qt::DirectConnection);
+
+    qDebug()<<"主线程："<<QThread::currentThread();
+    // 点击按钮 接收到 startThread信号 调用 myTimeout函数
+    connect(this,&Two::startThread,myT,&MyThread::myTimeout);
+    connect(this,&Two::destroyed,this,&Two::dealClose); // 窗口关闭 发送信号 引发槽函数关闭线程
+
+    // 发送消息
+    connect(this,&Two::sendMessage,myT,&MyThread::Send,Qt::DirectConnection);
+    connect(myT,&MyThread::sendSuccess,this,&Two::afterSend);
+
+    // 接收消息
+    connect(this,&Two::waitRecv,myT,&MyThread::Read);
+    connect(myT,&MyThread::readSuccess,this,&Two::afterGet,Qt::DirectConnection);
     /**********************************线程***************************************/
 
 }
@@ -132,14 +149,13 @@ void Two::on_pushButton_2_clicked()
         }
     }
     /********************************发送数据到服务器上*************************************/
-    Socket::CardShare p1;
+    CardShare p1;
     p1.cardArr[0]= 5;
     p1.cardArr[1]=2;
     p1.number =55;
-    clientSockt.Send(p1); // 发送
+    emit sendMessage(p1); //发送数据
     /********************************发送数据到服务器上*************************************/
-    Socket::CardShare p2=clientSockt.FirestRead(); // 接收
-    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
+
     /********************************接收数据从服务器上*************************************/
 
     /********************************接收数据从服务器上*************************************/
@@ -166,16 +182,10 @@ void Two::on_pushButton_3_clicked()
  * @brief Two::on_pushButton_4_clicked 开始游戏开启线程 连接服务器
  */
 void Two::on_pushButton_4_clicked(){
-    thread->start(); // 开启线程
-    //
-    while(1){
-        p2=clientSockt.FirestRead();
-        if(p2.cardArr[0]!=0)
-            break;
-        QThread::sleep(1);
-    }//第一次接收 ，即发牌
-    qDebug()<<p2.cardArr[1]<<endl;
-    ///
+
+    // 启动线程
+    thread->start();
+    emit startThread(); // 发射信号 调用connect
 }
 
 
@@ -184,11 +194,13 @@ void Two::on_pushButton_4_clicked(){
 
 
 /*************************************线程操作***************************/
+
 /**
- * @brief Two::DeadDone 线程结束操作
+ * @brief Two::dealSignal 线程结束操作显示数据
  */
-void Two::DeadDone(){
-    qDebug()<<"+++++++++++"<<p2.cardArr[0]<<p2.cardArr[1]<<endl;
+void Two::dealSignal(CardShare p){
+    // 显示数据
+    qDebug()<<"dealSignal的数据为：  "<<(p).cardArr[0]<<endl;
     QString s[17];
     s[0]=":/pukeimage1\\1.jpg";
     s[1]=":/pukeimage1\\2.jpg";
@@ -207,7 +219,7 @@ void Two::DeadDone(){
     s[14]=":/pukeimage1\\15.jpg";
     for (int i=0;i<17 ;i++ ) {
         QImage image;
-        image.load(s[p2.cardArr[i]+1+1]);
+        image.load(s[(p).cardArr[i]+1+1]);
         QPixmap pixmap=QPixmap::fromImage(image);
         myarray[i]->setPixmap(pixmap);
         int h=myarray[i]->height();
@@ -216,6 +228,38 @@ void Two::DeadDone(){
         myarray[i]->setPixmap(map);
     }
 }
+
+
+/**
+ * @brief Two::dealClose 窗口关闭线程停止
+ */
+void Two::dealClose(){
+    if(thread->isRunning() ==false)
+        return ;
+    thread->quit();
+    thread->wait();
+}
+
+
+/**
+ * @brief Two::afterSend 发送成功之后操作
+ */
+void Two::afterSend(){
+
+
+    emit waitRecv();
+}
+
+
+/**
+ * @brief Two::afterGet  接收到服务器发来的数据之后操作
+ * @param p 接收到结构体
+ */
+void Two::afterGet(CardShare p){
+
+}
+
+
 
 
 /*************************************线程操作***************************/

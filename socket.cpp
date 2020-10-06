@@ -104,7 +104,7 @@ bool Socket::Connect(char* serverIp, unsigned short serverPort)
  * @param len
  * @return
  */
-int Socket::Send(Socket::CardShare p)
+int Socket::Send(CardShare p)
 {
     // 向服务端发送数据
     int nRet =send(m_Client, (char*)&p, sizeof(CardShare), 0);
@@ -121,7 +121,7 @@ int Socket::Send(Socket::CardShare p)
  * @brief Socket::FirestRead 发牌
  * @return
  */
-Socket::CardShare Socket::FirestRead(){
+CardShare Socket::FirestRead(){
     CardShare cardArr;
     char temp[200];
     memset(temp, 0, sizeof(temp));

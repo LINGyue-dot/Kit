@@ -19,6 +19,7 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
+    Struct.h \
     compare.h \
     mylabel.h \
     mythread.h \
