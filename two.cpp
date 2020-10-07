@@ -16,29 +16,29 @@ Two::Two(QWidget *parent) :
     ui->setupUi(this);
 
     // 定时器
-//    myTimer = new QTimer(this);
-//    myTimer->start(100); // 设置100ms，定时触发timeout型号
-//    connect(myTimer,&QTimer::timeout,
-//            [=]()
-//    {
-//        p2=clientSockt.FirestRead();
-//        if(p2.cardArr[0]!=0)
-//            myTimer->stop();
-//    }
-//    );
+    //    myTimer = new QTimer(this);
+    //    myTimer->start(100); // 设置100ms，定时触发timeout型号
+    //    connect(myTimer,&QTimer::timeout,
+    //            [=]()
+    //    {
+    //        p2=clientSockt.FirestRead();
+    //        if(p2.cardArr[0]!=0)
+    //            myTimer->stop();
+    //    }
+    //    );
 
 
     //*******************************连接服务器****************************************/
     QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
 
     //    Socket clientSockt;
-//    clientSockt.Init();
-//    clientSockt.Connect("127.0.0.1",8000);
-//    clientSockt.SettingTimeout(1); // 一秒后自动断开
+    //    clientSockt.Init();
+    //    clientSockt.Connect("127.0.0.1",8000);
+    //    clientSockt.SettingTimeout(1); // 一秒后自动断开
     //    Socket::CardShare p2;
     //    connect(p2, SIGNAL(signal()), this, SLOT(slot()));
 
-//    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
+    //    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
     //    for(int i=0;i<17;i++)
     //        cout<<p2.cardArr[i]<<"+++++++++++++++++"<<endl;
     //    cout<< p2.number<<endl;
@@ -91,21 +91,26 @@ Two::Two(QWidget *parent) :
     //把自定义的线程加入到子线程中
     myT->moveToThread(thread);
 
-    // 子线程执行完毕 发出mySignal信号 然后执行 dealSignal 发牌
-    connect(myT,&MyThread::mySignal,this,&Two::dealSignal,Qt::DirectConnection);
 
-    qDebug()<<"主线程："<<QThread::currentThread();
-    // 点击按钮 接收到 startThread信号 调用 myTimeout函数
+
+    qDebug()<<"主线程："<<QThread::currentThread()<<endl;
+    // 点击开始游戏按钮 接收到 startThread信号 调用 myTimeout函数
     connect(this,&Two::startThread,myT,&MyThread::myTimeout);
-    connect(this,&Two::destroyed,this,&Two::dealClose); // 窗口关闭 发送信号 引发槽函数关闭线程
+    // myTimeout函数执行完毕后即子线程执行完毕 发出mySignal信号 然后执行 dealSignal UI发牌
+    connect(myT,&MyThread::mySignal,this,&Two::dealSignal,Qt::QueuedConnection);
+
 
     // 发送消息
-    connect(this,&Two::sendMessage,myT,&MyThread::Send,Qt::DirectConnection);
+    connect(this,&Two::sendMessage,myT,&MyThread::Send,Qt::QueuedConnection);
     connect(myT,&MyThread::sendSuccess,this,&Two::afterSend);
 
     // 接收消息
     connect(this,&Two::waitRecv,myT,&MyThread::Read);
-    connect(myT,&MyThread::readSuccess,this,&Two::afterGet,Qt::DirectConnection);
+    connect(myT,&MyThread::readSuccess,this,&Two::afterGet,Qt::QueuedConnection);
+
+
+    // 窗口关闭 发送信号 引发槽函数关闭线程
+    connect(this,&Two::destroyed,this,&Two::dealClose);
     /**********************************线程***************************************/
 
 }
@@ -153,7 +158,9 @@ void Two::on_pushButton_2_clicked()
     p1.cardArr[0]= 5;
     p1.cardArr[1]=2;
     p1.number =55;
+
     emit sendMessage(p1); //发送数据
+
     /********************************发送数据到服务器上*************************************/
 
     /********************************接收数据从服务器上*************************************/
@@ -234,8 +241,7 @@ void Two::dealSignal(CardShare p){
  * @brief Two::dealClose 窗口关闭线程停止
  */
 void Two::dealClose(){
-    if(thread->isRunning() ==false)
-        return ;
+    qDebug()<<"dealClose线程："<<QThread::currentThread();
     thread->quit();
     thread->wait();
 }
@@ -252,11 +258,11 @@ void Two::afterSend(){
 
 
 /**
- * @brief Two::afterGet  接收到服务器发来的数据之后操作
+ * @brief Two::afterGet  接收到服务器发来的数据成功之后操作
  * @param p 接收到结构体
  */
 void Two::afterGet(CardShare p){
-
+    qDebug()<<"afterGet:  "<<p.cardArr[0]<<p.cardArr[1]<<"p.number: "<<p.number<<endl;
 }
 
 

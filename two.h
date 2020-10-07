@@ -24,10 +24,13 @@ signals:
 
     void waitRecv();
 
+    void closeThread();
 public:
     explicit Two(QWidget *parent = nullptr);
     ~Two();
 
+
+public slots:
     void dealSignal(CardShare p); // 线程结束处理信号
 
     void dealClose(); // 处理关闭窗口

@@ -125,11 +125,10 @@ CardShare Socket::FirestRead(){
     CardShare cardArr;
     char temp[200];
     memset(temp, 0, sizeof(temp));
-    recv(m_Client, temp, 101, 0);
+    qDebug()<<"recv"<<recv(m_Client, temp, 101, 0)<<endl;;
     memcpy(&cardArr, temp, sizeof(CardShare));
     return cardArr;
 }
-
 
 /**
  * @brief Socket::Read

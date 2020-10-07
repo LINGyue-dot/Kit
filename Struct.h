@@ -10,7 +10,4 @@ typedef struct CardShare {
 }CardShare;
 Q_DECLARE_METATYPE(CardShare);
 
-
-
-
 #endif // STRUCT_H

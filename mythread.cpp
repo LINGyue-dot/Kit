@@ -19,14 +19,13 @@ MyThread::MyThread(QObject *parent) : QObject(parent)
 void MyThread::myTimeout(){
     CardShare p;
     while(1){
-        QThread::sleep(1);
         qDebug()<<"FirstGets子线程："<<QThread::currentThread();
         p=clientSocket.FirestRead();
-        qDebug()<< "p :  "<< (p).cardArr[0]<<endl;
+        qDebug()<< "p :  "<< (p).cardArr[0]<<"   p.number: "<<p.number<<endl;
         if(p.cardArr[0]!=0)
             break;
+        QThread::sleep(1);
     }
-    qDebug()<<"成功接收  :"<<(p).cardArr[0]<<endl;
     emit mySignal(p); // 发出信号表示完成
 }
 
@@ -38,10 +37,10 @@ void MyThread::myTimeout(){
  */
 void MyThread::Send(CardShare p){
     while(1){
-        QThread::sleep(1);
         qDebug()<<"Send子线程："<<QThread::currentThread();
         int i =clientSocket.Send(p);
-        if(i>0)
+        QThread::sleep(1);
+        if(i>=0)
             break;
     }
     emit sendSuccess();
@@ -53,8 +52,14 @@ void MyThread::Send(CardShare p){
  */
 void MyThread::Read(){
     CardShare p;
-
-
+    while(1){
+        qDebug()<<"Reads的线程："<<QThread::currentThread();
+        p=clientSocket.FirestRead();
+        qDebug()<< "p :  "<< (p).cardArr[0]<<p.cardArr[1]<<"   p.number: "<<p.number<<endl;
+        if(p.cardArr[0]!=0)
+            break;
+        QThread::sleep(1);
+    }
     emit  readSuccess(p);
 }
 

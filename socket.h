@@ -4,6 +4,7 @@
 #include <WinSock2.h>
 #include <string>
 #include"Struct.h"
+#include <QDebug>
 
 
 using namespace std;
