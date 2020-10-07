@@ -5,6 +5,7 @@
 #include "Struct.h"
 #include  "socket.h"
 #include "mylabel.h"
+#include "compare.h"
 #include <QWidget>
 
 namespace Ui {
@@ -56,6 +57,8 @@ private:
 
     mylabel *myarray[20];
     int position[20];
+    int a[5]={0,0,0,0,0};
+    QString s2[15];
 
     Socket clientSockt;
     CardShare p2;

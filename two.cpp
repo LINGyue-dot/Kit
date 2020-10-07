@@ -68,7 +68,6 @@ Two::Two(QWidget *parent) :
     // 窗口关闭 发送信号 引发槽函数关闭线程
     connect(this,&Two::destroyed,this,&Two::dealClose);
     /**********************************线程***************************************/
-
 }
 
 Two::~Two()
@@ -117,14 +116,9 @@ void Two::on_pushButton_2_clicked()
     p1.cardArr[0]= 5;
     p1.cardArr[1]=2;
     p1.number =55;
-
     emit sendMessage(p1); //发送数据
-
     /********************************发送数据到服务器上*************************************/
-
 }
-
-
 
 /**
  * @brief Two::on_pushButton_3_clicked 不出牌
@@ -149,7 +143,6 @@ void Two::on_pushButton_3_clicked()
  * @brief Two::on_pushButton_4_clicked 开始游戏开启线程 连接服务器
  */
 void Two::on_pushButton_4_clicked(){
-
     // 启动线程,开始游戏
     thread->start();
     emit startThread(); // 发射信号 调用connect
@@ -206,13 +199,13 @@ void Two::dealClose(){
     thread->wait();
 }
 
-
 /**
  * @brief Two::afterSend 发送成功之后操作
  */
 void Two::afterSend(){
 
-
+    // 发送成功后接收2次
+    emit waitRecv();
     emit waitRecv();
 }
 
@@ -224,8 +217,4 @@ void Two::afterSend(){
 void Two::afterGet(CardShare p){
     qDebug()<<"afterGet:  "<<p.cardArr[0]<<p.cardArr[1]<<"p.number: "<<p.number<<endl;
 }
-
-
-
-
 /*************************************线程操作***************************/
