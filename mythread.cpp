@@ -1,13 +1,11 @@
 #include "mythread.h"
-
 #include <QThread>
 #include <QDebug>
 
 MyThread::MyThread(QObject *parent) : QObject(parent)
 {
-//    this->isGet =false;
-
     // clientSocket 初始化
+    //连接服务器
     clientSocket.Init();
     clientSocket.Connect("127.0.0.1",8000);
     clientSocket.SettingTimeout(1); // 一秒后自动断开
@@ -43,7 +41,7 @@ void MyThread::Send(CardShare p){
         if(i>=0)
             break;
     }
-    emit sendSuccess();
+    emit sendSuccess(); // 发出信号即已完成发送消息到服务器操作
 }
 
 /**
@@ -60,7 +58,7 @@ void MyThread::Read(){
             break;
         QThread::sleep(1);
     }
-    emit  readSuccess(p);
+    emit  readSuccess(p); // 发出信号， 即已完成收到服务器的消息操作
 }
 
 

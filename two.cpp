@@ -14,44 +14,6 @@ Two::Two(QWidget *parent) :
 {
 
     ui->setupUi(this);
-
-    // 定时器
-    //    myTimer = new QTimer(this);
-    //    myTimer->start(100); // 设置100ms，定时触发timeout型号
-    //    connect(myTimer,&QTimer::timeout,
-    //            [=]()
-    //    {
-    //        p2=clientSockt.FirestRead();
-    //        if(p2.cardArr[0]!=0)
-    //            myTimer->stop();
-    //    }
-    //    );
-
-
-    //*******************************连接服务器****************************************/
-    QTextStream cout(stdout, QIODevice::WriteOnly);//  声明cout
-
-    //    Socket clientSockt;
-    //    clientSockt.Init();
-    //    clientSockt.Connect("127.0.0.1",8000);
-    //    clientSockt.SettingTimeout(1); // 一秒后自动断开
-    //    Socket::CardShare p2;
-    //    connect(p2, SIGNAL(signal()), this, SLOT(slot()));
-
-    //    p2=clientSockt.FirestRead(); //第一次接收 ，即发牌
-    //    for(int i=0;i<17;i++)
-    //        cout<<p2.cardArr[i]<<"+++++++++++++++++"<<endl;
-    //    cout<< p2.number<<endl;
-    //    cout<<"Send:"<<clientSockt.Send("hellpo",sizeof("hellpo"));
-    //    string c;
-    //    clientSockt.Read(c)
-    //    clientSockt.Send(p); // 发送
-    //    Socket::CardShare p3=clientSockt.FirestRead(); // 接收
-    //    cout<< p3.cardArr[0]<<p3.cardArr[1]<<p3.number<<"+++++++++"<<endl;
-    //*******************************连接服务器****************************************//
-
-
-
     //================================载入图片=========================================//
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
@@ -90,16 +52,11 @@ Two::Two(QWidget *parent) :
 
     //把自定义的线程加入到子线程中
     myT->moveToThread(thread);
-
-
-
     qDebug()<<"主线程："<<QThread::currentThread()<<endl;
     // 点击开始游戏按钮 接收到 startThread信号 调用 myTimeout函数
     connect(this,&Two::startThread,myT,&MyThread::myTimeout);
     // myTimeout函数执行完毕后即子线程执行完毕 发出mySignal信号 然后执行 dealSignal UI发牌
     connect(myT,&MyThread::mySignal,this,&Two::dealSignal,Qt::QueuedConnection);
-
-
     // 发送消息
     connect(this,&Two::sendMessage,myT,&MyThread::Send,Qt::QueuedConnection);
     connect(myT,&MyThread::sendSuccess,this,&Two::afterSend);
@@ -107,7 +64,6 @@ Two::Two(QWidget *parent) :
     // 接收消息
     connect(this,&Two::waitRecv,myT,&MyThread::Read);
     connect(myT,&MyThread::readSuccess,this,&Two::afterGet,Qt::QueuedConnection);
-
 
     // 窗口关闭 发送信号 引发槽函数关闭线程
     connect(this,&Two::destroyed,this,&Two::dealClose);
@@ -123,7 +79,10 @@ Two::~Two()
 void Two::on_pushButton_clicked(){
     emit display(0);
 }
-//=========================================出牌=========================================//
+
+/**
+ * @brief Two::on_pushButton_2_clicked 出牌
+ */
 void Two::on_pushButton_2_clicked()
 {
     int k=0;
@@ -163,16 +122,17 @@ void Two::on_pushButton_2_clicked()
 
     /********************************发送数据到服务器上*************************************/
 
-    /********************************接收数据从服务器上*************************************/
-
-    /********************************接收数据从服务器上*************************************/
 }
-//============================================出牌=====================================//
 
-//=======================================不出=============================================//
+
+
+/**
+ * @brief Two::on_pushButton_3_clicked 不出牌
+ */
 void Two::on_pushButton_3_clicked()
 {
     for (int i=0;i<17 ;i++ )
+
     {
         if(myarray[i]->value==10&&myarray[i]->exist==1)
         {
@@ -190,7 +150,7 @@ void Two::on_pushButton_3_clicked()
  */
 void Two::on_pushButton_4_clicked(){
 
-    // 启动线程
+    // 启动线程,开始游戏
     thread->start();
     emit startThread(); // 发射信号 调用connect
 }
