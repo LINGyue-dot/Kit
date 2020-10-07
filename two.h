@@ -30,6 +30,8 @@ public:
     explicit Two(QWidget *parent = nullptr);
     ~Two();
 
+    void showTable(CardShare p);// 将牌显示到牌桌中间
+
 
 public slots:
     void dealSignal(CardShare p); // 线程结束处理信号
@@ -58,10 +60,12 @@ private:
     mylabel *myarray[20];
     int position[20];
     int a[5]={0,0,0,0,0};
-    QString s2[15];
+    QString s[15];
+    QLabel *myarray2[15];
 
     Socket clientSockt;
     CardShare p2;
+    bool recvFirst;
 };
 
 #endif // TWO_H

@@ -15,6 +15,23 @@ Two::Two(QWidget *parent) :
 
     ui->setupUi(this);
     //================================载入图片=========================================//
+    s[0]=":/pukeimage1\\3.jpg";
+    s[1]=":/pukeimage1\\4.jpg";
+    s[2]=":/pukeimage1\\5.jpg";
+    s[3]=":/pukeimage1\\6.jpg";
+    s[4]=":/pukeimage1\\7.jpg";
+    s[5]=":/pukeimage1\\8.jpg";
+    s[6]=":/pukeimage1\\9.jpg";
+    s[7]=":/pukeimage1\\10.jpg";
+    s[8]=":/pukeimage1\\11.jpg";
+    s[9]=":/pukeimage1\\12.jpg";
+    s[10]=":/pukeimage1\\13.jpg";
+    s[11]=":/pukeimage1\\14.jpg";
+    s[12]=":/pukeimage1\\15.jpg";
+    s[13]=":/pukeimage1\\2.jpg";
+    s[14]=":/pukeimage1\\1.jpg";
+
+
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
     myarray[2]=ui->label_3;
@@ -84,6 +101,9 @@ void Two::on_pushButton_clicked(){
  */
 void Two::on_pushButton_2_clicked()
 {
+    CardShare p1;
+    int number =0;
+    p1.number =55;
     int k=0;
     int m=0;
     for (int i=0;i<17 ;i++ )
@@ -94,6 +114,7 @@ void Two::on_pushButton_2_clicked()
             k=k+1;
             myarray[i]->exist=0;
             position[i]=0;
+            p1.cardArr[number++]= myarray[i]->number;
         }
     }
     for (int i=0;i<17 ;i++ )
@@ -111,11 +132,10 @@ void Two::on_pushButton_2_clicked()
             myarray[i]->exist=2;
         }
     }
+    for(int x =number;x<15;x++)
+        p1.cardArr[x]=0;
     /********************************发送数据到服务器上*************************************/
-    CardShare p1;
-    p1.cardArr[0]= 5;
-    p1.cardArr[1]=2;
-    p1.number =55;
+
     emit sendMessage(p1); //发送数据
     /********************************发送数据到服务器上*************************************/
 }
@@ -149,6 +169,35 @@ void Two::on_pushButton_4_clicked(){
 }
 
 
+/**
+ * @brief Two::showTable 别的玩家的出牌
+ * @param p
+ */
+void Two::showTable(CardShare p){
+
+    myarray2[0]=ui->label_21;
+    myarray2[1]=ui->label_22;
+    myarray2[2]=ui->label_23;
+    myarray2[3]=ui->label_24;
+    myarray2[4]=ui->label_25;
+    for(int i=0;i<5;i++)
+    {
+        if(p.cardArr[i]==0)
+            myarray2[i]->hide();
+        else
+        {
+            QImage image2;
+            image2.load(s[p.cardArr[i]-1]);
+            QPixmap pixmap2=QPixmap::fromImage(image2);
+            myarray2[i]->setPixmap(pixmap2);
+            int h2=myarray2[i]->height();
+            int w2=myarray2[i]->width();
+            QPixmap map2=pixmap2.scaled(w2,h2,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            myarray2[i]->show();
+            myarray2[i]->setPixmap(map2);
+        }
+    }
+}
 
 
 
@@ -160,26 +209,17 @@ void Two::on_pushButton_4_clicked(){
  */
 void Two::dealSignal(CardShare p){
     // 显示数据
-    qDebug()<<"dealSignal的数据为：  "<<(p).cardArr[0]<<endl;
-    QString s[17];
-    s[0]=":/pukeimage1\\1.jpg";
-    s[1]=":/pukeimage1\\2.jpg";
-    s[2]=":/pukeimage1\\3.jpg";
-    s[3]=":/pukeimage1\\4.jpg";
-    s[4]=":/pukeimage1\\5.jpg";
-    s[5]=":/pukeimage1\\6.jpg";
-    s[6]=":/pukeimage1\\7.jpg";
-    s[7]=":/pukeimage1\\8.jpg";
-    s[8]=":/pukeimage1\\9.jpg";
-    s[9]=":/pukeimage1\\10.jpg";
-    s[10]=":/pukeimage1\\11.jpg";
-    s[11]=":/pukeimage1\\12.jpg";
-    s[12]=":/pukeimage1\\13.jpg";
-    s[13]=":/pukeimage1\\14.jpg";
-    s[14]=":/pukeimage1\\15.jpg";
+    qDebug()<<"dealSignal的数据为：p.cardArr[16]:  "<<(p).cardArr[16]<<endl;
+    int temp =17;
+    if(p.number>=10){// 判断是否为地主
+        temp =20;
+        p.number-=10;
+        qDebug()<<"p.arr[19]:  "<<p.cardArr[19]<<endl;
+    }
     for (int i=0;i<17 ;i++ ) {
         QImage image;
-        image.load(s[(p).cardArr[i]+1+1]);
+        image.load(s[(p).cardArr[i]-1]);
+        myarray[i]->number =p.cardArr[i];
         QPixmap pixmap=QPixmap::fromImage(image);
         myarray[i]->setPixmap(pixmap);
         int h=myarray[i]->height();
@@ -188,7 +228,6 @@ void Two::dealSignal(CardShare p){
         myarray[i]->setPixmap(map);
     }
 }
-
 
 /**
  * @brief Two::dealClose 窗口关闭线程停止
@@ -203,12 +242,10 @@ void Two::dealClose(){
  * @brief Two::afterSend 发送成功之后操作
  */
 void Two::afterSend(){
-
     // 发送成功后接收2次
     emit waitRecv();
-    emit waitRecv();
+    recvFirst =true;
 }
-
 
 /**
  * @brief Two::afterGet  接收到服务器发来的数据成功之后操作
@@ -216,5 +253,12 @@ void Two::afterSend(){
  */
 void Two::afterGet(CardShare p){
     qDebug()<<"afterGet:  "<<p.cardArr[0]<<p.cardArr[1]<<"p.number: "<<p.number<<endl;
+    // 如果仅接受了一次消息
+    showTable(p);
+    if(recvFirst){
+        emit waitRecv();
+        recvFirst =false;
+    }
 }
+
 /*************************************线程操作***************************/

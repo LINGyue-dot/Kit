@@ -10,6 +10,7 @@ public:
     explicit mylabel(QWidget *parent = nullptr);
     int value=100;
     int exist=1;
+    int number;
 protected:
     void mousePressEvent(QMouseEvent *e);
 
