@@ -49,10 +49,13 @@ Two::Two(QWidget *parent) :
     myarray[14]=ui->label_15;
     myarray[15]=ui->label_16;
     myarray[16]=ui->label_17;
+    myarray[17]=ui->label_18;
+    myarray[18]=ui->label_19;
+    myarray[19]=ui->label_20;
     int m=myarray[0]->x();
     int n=myarray[0]->y();
     position[0]=m;
-    for (int i=1;i<17 ;i++ )
+    for (int i=1;i<20 ;i++ )
     {
         myarray[i]->setGeometry(m+25,n,72,141);
         position[i]=m+25;
@@ -106,7 +109,12 @@ void Two::on_pushButton_2_clicked()
     p1.number =55;
     int k=0;
     int m=0;
-    for (int i=0;i<17 ;i++ )
+    for (int i=0;i<20 ;i++ ) {
+        if(myarray[i]->exist==2)
+            myarray[i]->hide();
+
+    }
+    for (int i=0;i<20 ;i++ )
     {
         if(myarray[i]->value==10&&myarray[i]->exist==1)
         {
@@ -117,11 +125,11 @@ void Two::on_pushButton_2_clicked()
             p1.cardArr[number++]= myarray[i]->number;
         }
     }
-    for (int i=0;i<17 ;i++ )
+    for (int i=0;i<20 ;i++ )
     {
         if(position[i]==0&&myarray[i]->exist==0)
         {
-            for (int j=i+1;j<17 ;j++ )
+            for (int j=i+1;j<20 ;j++ )
             {
                 if(myarray[j]->exist==1)
                 {
@@ -145,7 +153,7 @@ void Two::on_pushButton_2_clicked()
  */
 void Two::on_pushButton_3_clicked()
 {
-    for (int i=0;i<17 ;i++ )
+    for (int i=0;i<20 ;i++ )
 
     {
         if(myarray[i]->value==10&&myarray[i]->exist==1)
@@ -180,7 +188,24 @@ void Two::showTable(CardShare p){
     myarray2[2]=ui->label_23;
     myarray2[3]=ui->label_24;
     myarray2[4]=ui->label_25;
-    for(int i=0;i<5;i++)
+    myarray2[5]=ui->label_26;
+    myarray2[6]=ui->label_27;
+    myarray2[7]=ui->label_28;
+    myarray2[8]=ui->label_29;
+    myarray2[9]=ui->label_30;
+    myarray2[10]=ui->label_31;
+    myarray2[11]=ui->label_32;
+    myarray2[12]=ui->label_33;
+    myarray2[13]=ui->label_34;
+    myarray2[14]=ui->label_35;
+    int m=100;
+    for (int i=0;i<15 ;i++ )
+    {
+        myarray2[i]->setGeometry(200,m,72,141);
+
+        m=m+25;
+    }
+    for(int i=0;i<15;i++)
     {
         if(p.cardArr[i]==0)
             myarray2[i]->hide();
@@ -216,7 +241,9 @@ void Two::dealSignal(CardShare p){
         p.number-=10;
         qDebug()<<"p.arr[19]:  "<<p.cardArr[19]<<endl;
     }
+
     for (int i=0;i<17 ;i++ ) {
+
         QImage image;
         image.load(s[(p).cardArr[i]-1]);
         myarray[i]->number =p.cardArr[i];
@@ -226,6 +253,25 @@ void Two::dealSignal(CardShare p){
         int w=myarray[i]->width();
         QPixmap map=pixmap.scaled(w,h,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
         myarray[i]->setPixmap(map);
+    }
+    for(int i=17;i<20;i++)
+    {
+        if(temp==20)
+        {
+            QImage image3;
+            image3.load(s[(p).cardArr[i]-1]);
+            myarray[i]->number =p.cardArr[i];
+            QPixmap pixmap3=QPixmap::fromImage(image3);
+            myarray[i]->setPixmap(pixmap3);
+            int h3=myarray[i]->height();
+            int w3=myarray[i]->width();
+            QPixmap map3=pixmap3.scaled(w3,h3,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            myarray[i]->setPixmap(map3);
+        }
+        else
+        {
+            myarray[i]->hide();
+        }
     }
 }
 
@@ -253,12 +299,12 @@ void Two::afterSend(){
  */
 void Two::afterGet(CardShare p){
     qDebug()<<"afterGet:  "<<p.cardArr[0]<<p.cardArr[1]<<"p.number: "<<p.number<<endl;
-    // 如果仅接受了一次消息
     showTable(p);
-    if(recvFirst){
-        emit waitRecv();
-        recvFirst =false;
-    }
+    // 如果仅接受了一次消息
+//    if(recvFirst){
+//        emit waitRecv();
+//        recvFirst =false;
+//    }
 }
 
 /*************************************线程操作***************************/
