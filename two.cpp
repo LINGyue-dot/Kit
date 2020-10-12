@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 int num;
+QLabel *myarray3[3];
 Two::Two(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Two)
@@ -68,6 +69,13 @@ Two::Two(QWidget *parent) :
     myarray2[12]=ui->label_33;
     myarray2[13]=ui->label_34;
     myarray2[14]=ui->label_35;
+//    myarray3[0]=ui->label_36;地主牌
+//    myarray3[1]=ui->label_37;
+//    myarray3[2]=ui->label_38;
+    for(int i=0;i<3;i++)
+    {
+        myarray3[i]->hide();
+    }
     ui->pushButton_2->hide();
     ui->pushButton_3->hide();
     for(int i=0;i<15;i++)
@@ -139,7 +147,7 @@ void Two::on_pushButton_2_clicked()
             myarray[i]->hide();
 
     }
-    for (int i=0;i<20 ;i++ )
+    for (int i=0;i<20 ;i++ )//移动到中央
     {
         if(myarray[i]->value==10&&myarray[i]->exist==1)
         {
@@ -150,7 +158,7 @@ void Two::on_pushButton_2_clicked()
             p1.cardArr[number++]= myarray[i]->number;
         }
     }
-    for (int i=0;i<20 ;i++ )
+    for (int i=0;i<20 ;i++ )//向左对齐
     {
         if(position[i]==0&&myarray[i]->exist==0)
         {
@@ -158,7 +166,7 @@ void Two::on_pushButton_2_clicked()
             {
                 if(myarray[j]->exist==1)
                 {
-                    myarray[j]->move(position[j]-25,440);
+                    myarray[j]->move(position[j]-25,650);
                     position[j]=position[j]-25;
                 }
             }
