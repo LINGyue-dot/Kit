@@ -7,7 +7,7 @@ MyThread::MyThread(QObject *parent) : QObject(parent)
     // clientSocket 初始化
     //连接服务器
     clientSocket.Init();
-    clientSocket.Connect("192.168.43.6",8000);
+    clientSocket.Connect("120.27.242.14",8000);
     clientSocket.SettingTimeout(1); // 一秒后自动断开
 }
 

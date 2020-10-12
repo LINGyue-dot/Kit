@@ -15,8 +15,6 @@ One::~One()
 
 void One::on_logoinButton_clicked(){
     emit display(1);
-    QString s=ui->lineEdit->text(); //返回输入文本
-             //传送输入文本
 
 }
 

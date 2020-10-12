@@ -6,47 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
-    <height>525</height>
+    <width>1500</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="nextButton">
-   <property name="geometry">
-    <rect>
-     <x>410</x>
-     <y>320</y>
-     <width>171</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="logoinButton">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>310</y>
+     <x>690</x>
+     <y>660</y>
      <width>181</width>
      <height>81</height>
     </rect>
    </property>
    <property name="text">
-    <string>登入</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="lineEdit">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>180</y>
-     <width>113</width>
-     <height>21</height>
-    </rect>
+    <string>开始游戏</string>
    </property>
   </widget>
  </widget>
