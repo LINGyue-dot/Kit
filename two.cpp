@@ -371,11 +371,11 @@ void Two::dealSignal(CardShare p){
         publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
     }else{
         diZhuNum =p.number%100;
-        p.number-=(p.number%100)*100;
+        p.number=p.number-(p.number%100)*100;
         if((diZhuNum+1)%3==num){
             whichOne=2;
         }
-        if((diZhuNum+1)%3+1==num){
+        if((diZhuNum+2)%3==num){
             whichOne=3;
         }
     }
@@ -472,6 +472,8 @@ void Two::dealSignal(CardShare p){
         }
     }
 
+    qDebug()<<"475: whichOne is "<<whichOne<<endl;
+
     // 地主无需等待，发送后 接收2个
     // 第二位 需要等待一次 再发送 ，再正常等待2次
     // 第三位 直接等待
@@ -483,7 +485,6 @@ void Two::dealSignal(CardShare p){
     if(whichOne ==3){
         //最后一个出牌,等待2次
         recvFirst =true;
-
 
 
         //
