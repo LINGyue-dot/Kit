@@ -67,7 +67,6 @@ private:
 
     Socket clientSockt;
     CardShare publicCard; // 牌桌上的牌
-    CardShare nowCard; // 要出的牌
     bool recvFirst;
 
     int num; //玩家编号
