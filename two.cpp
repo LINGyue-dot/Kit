@@ -17,22 +17,22 @@ Two::Two(QWidget *parent) :
 
     ui->setupUi(this);
     //================================载入图片=========================================//
-    s[0]=":/pukeimage1\\3.jpg";
-    s[1]=":/pukeimage1\\4.jpg";
-    s[2]=":/pukeimage1\\5.jpg";
-    s[3]=":/pukeimage1\\6.jpg";
-    s[4]=":/pukeimage1\\7.jpg";
-    s[5]=":/pukeimage1\\8.jpg";
-    s[6]=":/pukeimage1\\9.jpg";
-    s[7]=":/pukeimage1\\10.jpg";
-    s[8]=":/pukeimage1\\11.jpg";
-    s[9]=":/pukeimage1\\12.jpg";
-    s[10]=":/pukeimage1\\13.jpg";
-    s[11]=":/pukeimage1\\14.jpg";
-    s[12]=":/pukeimage1\\15.jpg";
+    {s[0]=":/pukeimage1\\3.jpg";s[15]=":/pukeimage1\\16.jpg";s[28]=":/pukeimage1\\29.jpg";s[41]=":/pukeimage1\\42.jpg";
+    s[1]=":/pukeimage1\\4.jpg";s[16]=":/pukeimage1\\17.jpg";s[29]=":/pukeimage1\\30.jpg";s[42]=":/pukeimage1\\43.jpg";
+    s[2]=":/pukeimage1\\5.jpg";s[17]=":/pukeimage1\\18.jpg";s[30]=":/pukeimage1\\31.jpg";s[43]=":/pukeimage1\\44.jpg";
+    s[3]=":/pukeimage1\\6.jpg";s[18]=":/pukeimage1\\19.jpg";s[31]=":/pukeimage1\\32.jpg";s[44]=":/pukeimage1\\45.jpg";
+    s[4]=":/pukeimage1\\7.jpg";s[19]=":/pukeimage1\\20.jpg";s[32]=":/pukeimage1\\33.jpg";s[45]=":/pukeimage1\\46.jpg";
+    s[5]=":/pukeimage1\\8.jpg";s[20]=":/pukeimage1\\21.jpg";s[33]=":/pukeimage1\\34.jpg";s[46]=":/pukeimage1\\47.jpg";
+    s[6]=":/pukeimage1\\9.jpg";s[21]=":/pukeimage1\\22.jpg";s[34]=":/pukeimage1\\35.jpg";s[47]=":/pukeimage1\\48.jpg";
+    s[7]=":/pukeimage1\\10.jpg";s[22]=":/pukeimage1\\23.jpg";s[35]=":/pukeimage1\\36.jpg";s[48]=":/pukeimage1\\49.jpg";
+    s[8]=":/pukeimage1\\11.jpg";s[23]=":/pukeimage1\\24.jpg";s[36]=":/pukeimage1\\37.jpg";s[49]=":/pukeimage1\\50.jpg";
+    s[9]=":/pukeimage1\\12.jpg";s[24]=":/pukeimage1\\25.jpg";s[37]=":/pukeimage1\\38.jpg";s[50]=":/pukeimage1\\51.jpg";
+    s[10]=":/pukeimage1\\13.jpg";s[25]=":/pukeimage1\\26.jpg";s[38]=":/pukeimage1\\39.jpg";s[51]=":/pukeimage1\\52.jpg";
+    s[11]=":/pukeimage1\\14.jpg";s[26]=":/pukeimage1\\27.jpg";s[39]=":/pukeimage1\\40.jpg";s[52]=":/pukeimage1\\53.jpg";
+    s[12]=":/pukeimage1\\15.jpg";s[27]=":/pukeimage1\\28.jpg";s[40]=":/pukeimage1\\41.jpg";s[53]=":/pukeimage1\\54.jpg";
     s[13]=":/pukeimage1\\2.jpg";
     s[14]=":/pukeimage1\\1.jpg";
-
+}
 
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
@@ -69,9 +69,9 @@ Two::Two(QWidget *parent) :
     myarray2[12]=ui->label_33;
     myarray2[13]=ui->label_34;
     myarray2[14]=ui->label_35;
-//    myarray3[0]=ui->label_36;地主牌
-//    myarray3[1]=ui->label_37;
-//    myarray3[2]=ui->label_38;
+    myarray3[0]=ui->label_36;//地主牌
+    myarray3[1]=ui->label_37;
+    myarray3[2]=ui->label_38;
     for(int i=0;i<3;i++)
     {
         myarray3[i]->hide();
@@ -292,7 +292,7 @@ void Two::showTable(CardShare p){
         else
         {
             QImage image2;
-            image2.load(s[p.cardArr[i]-1]);
+            image2.load(s[fun2(p.cardArr[i])]);
             QPixmap pixmap2=QPixmap::fromImage(image2);
             myarray2[i]->setPixmap(pixmap2);
             int h2=myarray2[i]->height();
@@ -319,11 +319,46 @@ void Two::dealSignal(CardShare p){
         qDebug()<<"p.arr[19]:  "<<p.cardArr[19]<<endl;
     }
     num=p.number;
+    int b[3];
+    for (int i;i<3 ;i++ )
+    {
+        b[i]=p.cardArr[i+17];
+    }
+    int tem;
+    if(temp==20)
+    {
+        for(int i=0;i<19;i++)
+        {
+            for(int j=0;j<19-i;j++)
+            {
+                if(fun1(p.cardArr[j])<fun1(p.cardArr[j+1]))
+                {
+                    tem=p.cardArr[j];
+                    p.cardArr[j]=p.cardArr[j+1];
+                    p.cardArr[j+1]=tem;
+                }
+            }
+        }
+    }else
+    {
+        for(int i=0;i<16;i++)
+        {
+            for(int j=0;j<16-i;j++)
+            {
+                if(fun1(p.cardArr[j])<fun1(p.cardArr[j+1]))
+                {
+                    tem=p.cardArr[j];
+                    p.cardArr[j]=p.cardArr[j+1];
+                    p.cardArr[j+1]=tem;
+                }
+            }
+        }
+    }
     for (int i=0;i<17 ;i++ ) {
 
         QImage image;
-        image.load(s[(p).cardArr[i]-1]);
-        myarray[i]->number =p.cardArr[i];
+        image.load(s[fun2(p.cardArr[i])]);
+        myarray[i]->number =fun1(p.cardArr[i]);
         QPixmap pixmap=QPixmap::fromImage(image);
         myarray[i]->setPixmap(pixmap);
         int h=myarray[i]->height();
@@ -337,14 +372,24 @@ void Two::dealSignal(CardShare p){
         if(temp==20)
         {
             QImage image3;
-            image3.load(s[(p).cardArr[i]-1]);
-            myarray[i]->number =p.cardArr[i];
+            image3.load(s[fun2(p.cardArr[i])]);
+            myarray[i]->number =fun1(p.cardArr[i]);
             QPixmap pixmap3=QPixmap::fromImage(image3);
             myarray[i]->setPixmap(pixmap3);
             int h3=myarray[i]->height();
             int w3=myarray[i]->width();
             QPixmap map3=pixmap3.scaled(w3,h3,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
             myarray[i]->setPixmap(map3);
+
+            QImage image4;
+            image4.load(s[fun2(b[i-17])]);
+            QPixmap pixmap4=QPixmap::fromImage(image4);
+            myarray3[i-17]->setPixmap(pixmap4);
+            int h4=myarray3[i-17]->height();
+            int w4=myarray3[i-17]->width();
+            QPixmap map4=pixmap4.scaled(w4,h4,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            myarray3[i-17]->setPixmap(map4);
+            myarray3[i-17]->show();
             myarray[i]->show();
             ui->pushButton_2->show();
             ui->pushButton_3->show();
@@ -352,6 +397,15 @@ void Two::dealSignal(CardShare p){
         }
         else
         {
+            QImage image3;
+            image3.load(s[fun2(b[i-17])]);
+            QPixmap pixmap3=QPixmap::fromImage(image3);
+            myarray3[i-17]->setPixmap(pixmap3);
+            int h3=myarray3[i-17]->height();
+            int w3=myarray3[i-17]->width();
+            QPixmap map3=pixmap3.scaled(w3,h3,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            myarray3[i-17]->setPixmap(map3);
+            myarray3[i-17]->show();
             myarray[i]->hide();
         }
     }
@@ -395,3 +449,35 @@ void Two::afterGet(CardShare p){
 }
 
 /*************************************线程操作***************************/
+int Two::fun1(int x)
+{
+    if(x>0&&x<20)
+    {
+        return x;
+    }else if(x>20&&x<40)
+    {
+        return x-20;
+    }else if(x>40&&x<60)
+    {
+        return x-40;
+    }else
+    {
+        return x-60;
+    }
+}
+int Two::fun2(int x)
+{
+    if(x>0&&x<20)
+    {
+        return x-1;
+    }else if(x>20&&x<40)
+    {
+        return x-6;
+    }else if(x>20&&x<60)
+    {
+        return x-13;
+    }else
+    {
+        return x-20;
+    }
+}

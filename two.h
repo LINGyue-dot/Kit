@@ -31,6 +31,8 @@ public:
     ~Two();
 
     void showTable(CardShare p);// 将牌显示到牌桌中间
+    int fun1(int x);
+    int fun2(int x);
 
 
 public slots:
@@ -60,7 +62,7 @@ private:
     mylabel *myarray[20];
     int position[20];
     int a[5]={0,0,0,0,0};
-    QString s[15];
+    QString s[54];
     QLabel *myarray2[15];
 
     Socket clientSockt;
