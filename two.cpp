@@ -144,49 +144,83 @@ void Two::on_pushButton_2_clicked()
 {
     CardShare p1;
     int number =0;
-    p1.number =55;
-    int k=0;
-    int m=0;
-    for (int i=0;i<20 ;i++ ) {
-        if(myarray[i]->exist==2)
-            myarray[i]->hide();
+    p1.number =num;
 
-    }
-    for (int i=0;i<20 ;i++ )//移动到中央
-    {
+    for(int i=0;i<20;i++){
         if(myarray[i]->value==10&&myarray[i]->exist==1)
-        {
-            myarray[i]->move(700+k*25,200);
-            k=k+1;
-            myarray[i]->exist=0;
-            position[i]=0;
             p1.cardArr[number++]= myarray[i]->number;
-        }
     }
-    for (int i=0;i<20 ;i++ )//向左对齐
-    {
-        if(position[i]==0&&myarray[i]->exist==0)
-        {
-            for (int j=i+1;j<20 ;j++ )
-            {
-                if(myarray[j]->exist==1)
-                {
-                    myarray[j]->move(position[j]-25,650);
-                    position[j]=position[j]-25;
-                }
-            }
-            myarray[i]->exist=2;
-        }
-    }
+
+
     for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
 
-    for(int x =0;x<20;x++)
-        nowCard.cardArr[x]=p1.cardArr[x];
 
+    int changeNowCard[20],nowCard[20];
+    // nowCard   选中牌的真值数组  p1是选中的假值
+    // changeNowCard 是公共的真值   publicCard是公共的假值
+    for(int x =0;x<20;x++){
+        nowCard[x]=fun1(p1.cardArr[x]);
+        changeNowCard[x] =fun1(publicCard.cardArr[x]);
+    }
     /********************************发送数据到服务器上*************************************/
+    if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
+        emit sendMessage(p1); //发送数据
+        publicCard.number= num;
+        for(int i=0;i<20;i++){
+            // 更新公共牌
+            publicCard.cardArr[i]=p1.cardArr[i];
+        }
 
-    emit sendMessage(p1); //发送数据
+        /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
+        int k=0;
+        int m=0;
+        for (int i=0;i<20 ;i++ ) {
+            if(myarray[i]->exist==2)
+                myarray[i]->hide();
+
+        }
+        for (int i=0;i<20 ;i++ )//移动到中央
+        {
+            if(myarray[i]->value==10&&myarray[i]->exist==1)
+            {
+                myarray[i]->move(700+k*25,200);
+                k=k+1;
+                myarray[i]->exist=0;
+                position[i]=0;
+            }
+        }
+        for (int i=0;i<20 ;i++ )//向左对齐
+        {
+            if(position[i]==0&&myarray[i]->exist==0)
+            {
+                for (int j=i+1;j<20 ;j++ )
+                {
+                    if(myarray[j]->exist==1)
+                    {
+                        myarray[j]->move(position[j]-25,650);
+                        position[j]=position[j]-25;
+                    }
+                }
+                myarray[i]->exist=2;
+            }
+        }
+
+        /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
+    }else{
+        // 不出牌
+        for (int i=0;i<20 ;i++ )
+        {
+            if(myarray[i]->value==10&&myarray[i]->exist==1)
+            {
+                myarray[i]->value=100;
+                int x=myarray[i]->x();
+                int y=myarray[i]->y();
+                myarray[i]->move(x,y+50);
+            }
+        }
+
+    }
     /********************************发送数据到服务器上*************************************/
 }
 
@@ -206,6 +240,7 @@ void Two::on_pushButton_3_clicked()
             myarray[i]->move(x,y+50);
         }
     }
+    emit sendMessage(publicCard); //发送数据
 }
 
 
@@ -226,7 +261,6 @@ void Two::on_pushButton_4_clicked(){
  * @param p
  */
 void Two::showTable(CardShare p){
-
 
     int m=100;
     switch (num) {
@@ -288,12 +322,12 @@ void Two::showTable(CardShare p){
         }
         break;
     }
-    for (int i=0;i<15 ;i++ )
-    {
-        myarray2[i]->setGeometry(200,m,72,141);
+//    for (int i=0;i<15 ;i++ )
+//    {
+//        myarray2[i]->setGeometry(200,m,72,141);
 
-        m=m+25;
-    }
+//        m=m+25;
+//    }
     for(int i=0;i<15;i++)
     {
         if(p.cardArr[i]==0)
@@ -311,6 +345,13 @@ void Two::showTable(CardShare p){
             myarray2[i]->setPixmap(map2);
         }
     }
+
+    // 更新公共牌
+    publicCard.number=p.number;
+    for(int i =0;i<20;i++){
+        publicCard.cardArr[i]=p.cardArr[i];
+    }
+
 }
 
 /*************************************线程操作***************************/
@@ -378,7 +419,7 @@ void Two::dealSignal(CardShare p){
 
         QImage image;
         image.load(s[fun2(p.cardArr[i])]);
-        myarray[i]->number =fun1(p.cardArr[i]);
+        myarray[i]->number =p.cardArr[i];
         QPixmap pixmap=QPixmap::fromImage(image);
         myarray[i]->setPixmap(pixmap);
         int h=myarray[i]->height();
@@ -393,7 +434,7 @@ void Two::dealSignal(CardShare p){
         {
             QImage image3;
             image3.load(s[fun2(p.cardArr[i])]);
-            myarray[i]->number =fun1(p.cardArr[i]);
+            myarray[i]->number =p.cardArr[i];
             QPixmap pixmap3=QPixmap::fromImage(image3);
             myarray[i]->setPixmap(pixmap3);
             int h3=myarray[i]->height();
@@ -440,7 +481,7 @@ void Two::dealSignal(CardShare p){
         emit waitRecv();
     }
     if(whichOne ==3){
-         //最后一个出牌,等待2次
+        //最后一个出牌,等待2次
         recvFirst =true;
         emit waitRecv();
         ui->pushButton_2->hide();
@@ -461,13 +502,13 @@ void Two::dealClose(){
  * @brief Two::afterSend 发送成功之后操作
  */
 void Two::afterSend(){
-
+    ui->pushButton_2->hide();
+    ui->pushButton_3->hide();
     // 发送成功后接收2次
     recvFirst =true;
     emit waitRecv();
 
-    ui->pushButton_2->hide();
-    ui->pushButton_3->hide();
+
 }
 
 /**
@@ -479,7 +520,7 @@ void Two::afterGet(CardShare p){
     showTable(p); // 展示数据
     // 再发送之后接收2次
     if(recvFirst){
-         emit waitRecv();
+        emit waitRecv();
         recvFirst =false;
         // 展示2个按钮 出牌和不出牌
         ui->pushButton_2->show();

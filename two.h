@@ -75,7 +75,7 @@ private:
     int whichOne; //第几个出牌 地主是一，逆时针加
     int firstRecv; //第一次等待需要等待几次
     QLabel *myarray3[3];
-
+    compare Compare;
 
 };
 
