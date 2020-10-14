@@ -8,8 +8,7 @@
 #include <QTimer>
 #include <stdio.h>
 
-int num;
-QLabel *myarray3[3];
+
 Two::Two(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Two)
@@ -18,21 +17,21 @@ Two::Two(QWidget *parent) :
     ui->setupUi(this);
     //================================载入图片=========================================//
     {s[0]=":/pukeimage1\\3.jpg";s[15]=":/pukeimage1\\16.jpg";s[28]=":/pukeimage1\\29.jpg";s[41]=":/pukeimage1\\42.jpg";
-    s[1]=":/pukeimage1\\4.jpg";s[16]=":/pukeimage1\\17.jpg";s[29]=":/pukeimage1\\30.jpg";s[42]=":/pukeimage1\\43.jpg";
-    s[2]=":/pukeimage1\\5.jpg";s[17]=":/pukeimage1\\18.jpg";s[30]=":/pukeimage1\\31.jpg";s[43]=":/pukeimage1\\44.jpg";
-    s[3]=":/pukeimage1\\6.jpg";s[18]=":/pukeimage1\\19.jpg";s[31]=":/pukeimage1\\32.jpg";s[44]=":/pukeimage1\\45.jpg";
-    s[4]=":/pukeimage1\\7.jpg";s[19]=":/pukeimage1\\20.jpg";s[32]=":/pukeimage1\\33.jpg";s[45]=":/pukeimage1\\46.jpg";
-    s[5]=":/pukeimage1\\8.jpg";s[20]=":/pukeimage1\\21.jpg";s[33]=":/pukeimage1\\34.jpg";s[46]=":/pukeimage1\\47.jpg";
-    s[6]=":/pukeimage1\\9.jpg";s[21]=":/pukeimage1\\22.jpg";s[34]=":/pukeimage1\\35.jpg";s[47]=":/pukeimage1\\48.jpg";
-    s[7]=":/pukeimage1\\10.jpg";s[22]=":/pukeimage1\\23.jpg";s[35]=":/pukeimage1\\36.jpg";s[48]=":/pukeimage1\\49.jpg";
-    s[8]=":/pukeimage1\\11.jpg";s[23]=":/pukeimage1\\24.jpg";s[36]=":/pukeimage1\\37.jpg";s[49]=":/pukeimage1\\50.jpg";
-    s[9]=":/pukeimage1\\12.jpg";s[24]=":/pukeimage1\\25.jpg";s[37]=":/pukeimage1\\38.jpg";s[50]=":/pukeimage1\\51.jpg";
-    s[10]=":/pukeimage1\\13.jpg";s[25]=":/pukeimage1\\26.jpg";s[38]=":/pukeimage1\\39.jpg";s[51]=":/pukeimage1\\52.jpg";
-    s[11]=":/pukeimage1\\14.jpg";s[26]=":/pukeimage1\\27.jpg";s[39]=":/pukeimage1\\40.jpg";s[52]=":/pukeimage1\\53.jpg";
-    s[12]=":/pukeimage1\\15.jpg";s[27]=":/pukeimage1\\28.jpg";s[40]=":/pukeimage1\\41.jpg";s[53]=":/pukeimage1\\54.jpg";
-    s[13]=":/pukeimage1\\2.jpg";
-    s[14]=":/pukeimage1\\1.jpg";
-}
+        s[1]=":/pukeimage1\\4.jpg";s[16]=":/pukeimage1\\17.jpg";s[29]=":/pukeimage1\\30.jpg";s[42]=":/pukeimage1\\43.jpg";
+        s[2]=":/pukeimage1\\5.jpg";s[17]=":/pukeimage1\\18.jpg";s[30]=":/pukeimage1\\31.jpg";s[43]=":/pukeimage1\\44.jpg";
+        s[3]=":/pukeimage1\\6.jpg";s[18]=":/pukeimage1\\19.jpg";s[31]=":/pukeimage1\\32.jpg";s[44]=":/pukeimage1\\45.jpg";
+        s[4]=":/pukeimage1\\7.jpg";s[19]=":/pukeimage1\\20.jpg";s[32]=":/pukeimage1\\33.jpg";s[45]=":/pukeimage1\\46.jpg";
+        s[5]=":/pukeimage1\\8.jpg";s[20]=":/pukeimage1\\21.jpg";s[33]=":/pukeimage1\\34.jpg";s[46]=":/pukeimage1\\47.jpg";
+        s[6]=":/pukeimage1\\9.jpg";s[21]=":/pukeimage1\\22.jpg";s[34]=":/pukeimage1\\35.jpg";s[47]=":/pukeimage1\\48.jpg";
+        s[7]=":/pukeimage1\\10.jpg";s[22]=":/pukeimage1\\23.jpg";s[35]=":/pukeimage1\\36.jpg";s[48]=":/pukeimage1\\49.jpg";
+        s[8]=":/pukeimage1\\11.jpg";s[23]=":/pukeimage1\\24.jpg";s[36]=":/pukeimage1\\37.jpg";s[49]=":/pukeimage1\\50.jpg";
+        s[9]=":/pukeimage1\\12.jpg";s[24]=":/pukeimage1\\25.jpg";s[37]=":/pukeimage1\\38.jpg";s[50]=":/pukeimage1\\51.jpg";
+        s[10]=":/pukeimage1\\13.jpg";s[25]=":/pukeimage1\\26.jpg";s[38]=":/pukeimage1\\39.jpg";s[51]=":/pukeimage1\\52.jpg";
+        s[11]=":/pukeimage1\\14.jpg";s[26]=":/pukeimage1\\27.jpg";s[39]=":/pukeimage1\\40.jpg";s[52]=":/pukeimage1\\53.jpg";
+        s[12]=":/pukeimage1\\15.jpg";s[27]=":/pukeimage1\\28.jpg";s[40]=":/pukeimage1\\41.jpg";s[53]=":/pukeimage1\\54.jpg";
+        s[13]=":/pukeimage1\\2.jpg";
+        s[14]=":/pukeimage1\\1.jpg";
+    }
 
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
@@ -92,7 +91,11 @@ Two::Two(QWidget *parent) :
         myarray[i]->hide();
         position[i]=m+25;
         m=m+25;
+        // 初始化公共牌
+        publicCard.cardArr[i]=0;
     }
+
+
 
 
     //================================载入图片=========================================//0
@@ -121,6 +124,8 @@ Two::Two(QWidget *parent) :
     // 窗口关闭 发送信号 引发槽函数关闭线程
     connect(this,&Two::destroyed,this,&Two::dealClose);
     /**********************************线程***************************************/
+
+
 }
 
 Two::~Two()
@@ -173,8 +178,12 @@ void Two::on_pushButton_2_clicked()
             myarray[i]->exist=2;
         }
     }
-    for(int x =number;x<15;x++)
+    for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
+
+    for(int x =0;x<20;x++)
+        nowCard.cardArr[x]=p1.cardArr[x];
+
     /********************************发送数据到服务器上*************************************/
 
     emit sendMessage(p1); //发送数据
@@ -307,16 +316,27 @@ void Two::showTable(CardShare p){
 /*************************************线程操作***************************/
 
 /**
- * @brief Two::dealSignal 线程结束操作显示数据
+ * @brief Two::dealSignal 线程结束操作显示数据 ,发牌
  */
 void Two::dealSignal(CardShare p){
     // 显示数据
     qDebug()<<"dealSignal的数据为：p.cardArr[16]:  "<<(p).cardArr[16]<<endl;
     int temp =17;
-    if(p.number>=10){// 判断是否为地主
+    if(p.number>=10&&p.number<100){// 判断是否为地主,如果不是地主的话 则在百位表示地主是哪个玩家的编号
         temp =20;
         p.number-=10;
-        qDebug()<<"p.arr[19]:  "<<p.cardArr[19]<<endl;
+        diZhuNum =p.number;
+        whichOne =1; //地主第一个出牌
+        publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
+    }else{
+        diZhuNum =p.number%100;
+        p.number-=(p.number%100)*100;
+        if((diZhuNum+1)%3==num){
+            whichOne=2;
+        }
+        if((diZhuNum+1)%3+1==num){
+            whichOne=3;
+        }
     }
     num=p.number;
     int b[3];
@@ -391,9 +411,10 @@ void Two::dealSignal(CardShare p){
             myarray3[i-17]->setPixmap(map4);
             myarray3[i-17]->show();
             myarray[i]->show();
+
+            // 2个按钮显示
             ui->pushButton_2->show();
             ui->pushButton_3->show();
-
         }
         else
         {
@@ -408,6 +429,22 @@ void Two::dealSignal(CardShare p){
             myarray3[i-17]->show();
             myarray[i]->hide();
         }
+    }
+
+    // 地主无需等待，发送后 接收2个
+    // 第二位 需要等待一次 再发送 ，再正常等待2次
+    // 第三位 直接等待
+    if(whichOne ==2){
+        // 第二个出牌需要等待一次
+        recvFirst =false;
+        emit waitRecv();
+    }
+    if(whichOne ==3){
+         //最后一个出牌,等待2次
+        recvFirst =true;
+        emit waitRecv();
+        ui->pushButton_2->hide();
+        ui->pushButton_3->hide();
     }
 }
 
@@ -426,8 +463,9 @@ void Two::dealClose(){
 void Two::afterSend(){
 
     // 发送成功后接收2次
-    emit waitRecv();
     recvFirst =true;
+    emit waitRecv();
+
     ui->pushButton_2->hide();
     ui->pushButton_3->hide();
 }
@@ -438,14 +476,17 @@ void Two::afterSend(){
  */
 void Two::afterGet(CardShare p){
     qDebug()<<"afterGet:  "<<p.cardArr[0]<<p.cardArr[1]<<"p.number: "<<p.number<<endl;
-    showTable(p);
-    // 如果仅接受了一次消息
+    showTable(p); // 展示数据
+    // 再发送之后接收2次
     if(recvFirst){
-//        emit waitRecv();
+         emit waitRecv();
         recvFirst =false;
+        // 展示2个按钮 出牌和不出牌
         ui->pushButton_2->show();
         ui->pushButton_3->show();
     }
+
+
 }
 
 /*************************************线程操作***************************/

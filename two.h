@@ -66,8 +66,17 @@ private:
     QLabel *myarray2[15];
 
     Socket clientSockt;
-    CardShare p2;
+    CardShare publicCard; // 牌桌上的牌
+    CardShare nowCard; // 要出的牌
     bool recvFirst;
+
+    int num; //玩家编号
+    int diZhuNum; // 地主编号
+    int whichOne; //第几个出牌 地主是一，逆时针加
+    int firstRecv; //第一次等待需要等待几次
+    QLabel *myarray3[3];
+
+
 };
 
 #endif // TWO_H
