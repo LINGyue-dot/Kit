@@ -483,6 +483,10 @@ void Two::dealSignal(CardShare p){
     if(whichOne ==3){
         //最后一个出牌,等待2次
         recvFirst =true;
+
+
+
+        //
         emit waitRecv();
         ui->pushButton_2->hide();
         ui->pushButton_3->hide();
