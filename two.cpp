@@ -280,7 +280,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(900,m,72,141);
+                myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
             }
@@ -307,7 +307,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(900,m,72,141);
+                myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
             }
@@ -318,7 +318,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(900,m,72,141);
+                myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
             }

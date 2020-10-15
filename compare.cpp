@@ -459,7 +459,7 @@ bool compare::isBoom(int *arr,int length){
 * @return
 */
 bool compare::isKingBoom(int *arr,int length){
-    if(length==2&&arr[0]==12&&arr[1]==13)
+    if(length==2&&arr[0]==15&&arr[1]==14)
         return true;
     else
         return false;
