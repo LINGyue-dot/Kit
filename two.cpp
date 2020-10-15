@@ -155,7 +155,9 @@ void Two::on_pushButton_2_clicked()
     for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
 
-
+    qDebug()<<"158:  p1.cardArr"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<p1.cardArr[i]<<"  ";
     int changeNowCard[20],nowCard[20];
     // nowCard   选中牌的真值数组  p1是选中的假值
     // changeNowCard 是公共的真值   publicCard是公共的假值
@@ -164,6 +166,13 @@ void Two::on_pushButton_2_clicked()
         changeNowCard[x] =fun1(publicCard.cardArr[x]);
     }
     /********************************发送数据到服务器上*************************************/
+    qDebug()<<"167:  changeNowCard"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<changeNowCard[i]<<"  ";
+        qDebug()<<"nowCard"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<nowCard[i]<<"  ";
+
     if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
         emit sendMessage(p1); //发送数据
         publicCard.number= num;
@@ -184,7 +193,7 @@ void Two::on_pushButton_2_clicked()
         {
             if(myarray[i]->value==10&&myarray[i]->exist==1)
             {
-                myarray[i]->move(700+k*25,200);
+                myarray[i]->move(700+k*25,500);
                 k=k+1;
                 myarray[i]->exist=0;
                 position[i]=0;
@@ -240,6 +249,8 @@ void Two::on_pushButton_3_clicked()
             myarray[i]->move(x,y+50);
         }
     }
+    ui->pushButton_2->hide();
+    ui->pushButton_3->hide();
     emit sendMessage(publicCard); //发送数据
 }
 
@@ -269,7 +280,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
+                myarray2[i]->setGeometry(900,m,72,141);
 
                 m=m+25;
             }
@@ -288,7 +299,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
+                myarray2[i]->setGeometry(200,m,72,141);
 
                 m=m+25;
             }
@@ -296,7 +307,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(900,m,72,141);
 
                 m=m+25;
             }
@@ -307,7 +318,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(900,m,72,141);
 
                 m=m+25;
             }
@@ -315,7 +326,7 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
+                myarray2[i]->setGeometry(200,m,72,141);
 
                 m=m+25;
             }
@@ -370,12 +381,13 @@ void Two::dealSignal(CardShare p){
         whichOne =1; //地主第一个出牌
         publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
     }else{
-        diZhuNum =p.number%100;
-        p.number-=(p.number%100)*100;
-        if((diZhuNum+1)%3==num){
+        diZhuNum =p.number/100;
+        p.number-=(p.number/100)*100;
+        num=p.number;
+        if((diZhuNum)%3==num-1){
             whichOne=2;
         }
-        if((diZhuNum+1)%3+1==num){
+        if((diZhuNum+1)%3==num-1){
             whichOne=3;
         }
     }
@@ -472,6 +484,7 @@ void Two::dealSignal(CardShare p){
         }
     }
 
+    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
     // 地主无需等待，发送后 接收2个
     // 第二位 需要等待一次 再发送 ，再正常等待2次
     // 第三位 直接等待
@@ -483,6 +496,8 @@ void Two::dealSignal(CardShare p){
     if(whichOne ==3){
         //最后一个出牌,等待2次
         recvFirst =true;
+
+
         emit waitRecv();
         ui->pushButton_2->hide();
         ui->pushButton_3->hide();
@@ -522,10 +537,12 @@ void Two::afterGet(CardShare p){
     if(recvFirst){
         emit waitRecv();
         recvFirst =false;
-        // 展示2个按钮 出牌和不出牌
-        ui->pushButton_2->show();
-        ui->pushButton_3->show();
+        return ;
     }
+
+    // 展示2个按钮 出牌和不出牌
+    ui->pushButton_2->show();
+    ui->pushButton_3->show();
 
 
 }
@@ -533,7 +550,7 @@ void Two::afterGet(CardShare p){
 /*************************************线程操作***************************/
 int Two::fun1(int x)
 {
-    if(x>0&&x<20)
+    if(x>=0&&x<20)
     {
         return x;
     }else if(x>20&&x<40)
