@@ -290,18 +290,37 @@ void Two::on_pushButton_4_clicked(){
 void Two::showTable(CardShare p){
 
     int m=100;
-    int n=0;
+
+    if(num==p.number)//别人都不出的情况
+    {
+        for(int i=0;i<15;i++)
+        {
+            myarray2[i]->hide();
+        }
+        return;
+    }
+
+
+    int n=0;// 记牌器
     for(int i=0;i<15;i++)
     {
-
-        if(publicCard.cardArr[i]==p.cardArr[i]  &&p.number==publicCard.number)
-        {
-            n=0;
-            continue;
-        }
         if(p.cardArr[i]!=0)
             n++;
     }
+
+
+    int flag =0; //p.arr是否与公共牌一致
+
+    for(flag=0;flag<15;flag++){
+        // 别的玩家不出牌 计数器不变化
+        if(publicCard.cardArr[flag]!=p.cardArr[flag]  ||p.number!=publicCard.number)
+         break;
+    }
+    if(flag ==15)         // 当 p arr 与公共拍一致时候
+        n=0;
+
+
+
     switch (num) {
     case 1:
         if(p.number==2)
@@ -312,6 +331,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"327 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -323,6 +343,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+                        qDebug()<<"339 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
@@ -337,6 +358,8 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+
+            qDebug()<<"355 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
@@ -348,6 +371,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+                        qDebug()<<"367 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -363,6 +387,7 @@ void Two::showTable(CardShare p){
                 m=m+25;
 
             }
+                        qDebug()<<"383 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -374,6 +399,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"395 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
