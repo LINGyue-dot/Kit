@@ -159,9 +159,9 @@ void Two::on_pushButton_2_clicked()
     for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
 
-    qDebug()<<"158:  p1.cardArr"<<endl;
-        for(int i =0;i<20;i++)
-            qDebug()<<p1.cardArr[i]<<"  ";
+//    qDebug()<<"158:  p1.cardArr"<<endl;
+//        for(int i =0;i<20;i++)
+//            qDebug()<<p1.cardArr[i]<<"  ";
     int changeNowCard[20],nowCard[20];
     // nowCard   选中牌的真值数组  p1是选中的假值
     // changeNowCard 是公共的真值   publicCard是公共的假值
@@ -170,12 +170,12 @@ void Two::on_pushButton_2_clicked()
         changeNowCard[x] =fun1(publicCard.cardArr[x]);
     }
     /********************************发送数据到服务器上*************************************/
-    qDebug()<<"167:  changeNowCard"<<endl;
-        for(int i =0;i<20;i++)
-            qDebug()<<changeNowCard[i]<<"  ";
-        qDebug()<<"nowCard"<<endl;
-        for(int i =0;i<20;i++)
-            qDebug()<<nowCard[i]<<"  ";
+//    qDebug()<<"167:  changeNowCard"<<endl;
+//        for(int i =0;i<20;i++)
+//            qDebug()<<changeNowCard[i]<<"  ";
+//        qDebug()<<"nowCard"<<endl;
+//        for(int i =0;i<20;i++)
+//            qDebug()<<nowCard[i]<<"  ";
 
     if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
         ui->pushButton_2->hide();
@@ -230,7 +230,7 @@ void Two::on_pushButton_2_clicked()
         }
         if(vic==0)
         {
-            qDebug()<<"胜利";
+            qDebug()<<"胜利"<<endl;
         }
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
     }else{
@@ -291,9 +291,27 @@ void Two::on_pushButton_4_clicked(){
 void Two::showTable(CardShare p){
 
     int m=100;
+
+    if(num==p.number)//别人都不出的情况
+        {
+            for(int i=0;i<15;i++)
+            {
+                myarray2[i]->hide();
+            }
+            return;
+        }
+
+
+
     int n=0;
     for(int i=0;i<15;i++)
     {
+
+        if(publicCard.cardArr[i]==p.cardArr[i]  &&p.number==publicCard.number)
+        {
+            n=0;
+            continue;
+        }
         if(p.cardArr[i]!=0)
             n++;
     }
@@ -421,14 +439,6 @@ void Two::dealSignal(CardShare p){
         p.number-=10;
         diZhuNum =p.number;
         whichOne =1; //地主第一个出牌
-//        line1=17;
-//        line2=17;
-//        s1=QString::number(line1);
-//        s2=QString::number(line2);
-//        ui->lineEdit->setText(s1);
-//        ui->lineEdit_2->setText(s2);
-//        ui->lineEdit->setEnabled(false);
-//        ui->lineEdit_2->setEnabled(false);
         publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
     }else{
 
@@ -437,14 +447,6 @@ void Two::dealSignal(CardShare p){
         num=p.number;
         if((diZhuNum)%3==num-1){
             whichOne=2;
-//            line1=17;
-//            line2=17;
-//            s1=QString::number(line1);
-//            s2=QString::number(line2);
-//            ui->lineEdit->setText(s1);
-//            ui->lineEdit_2->setText(s2);
-//            ui->lineEdit->setEnabled(false);
-//            ui->lineEdit_2->setEnabled(false);
         }
 
         if((diZhuNum+1)%3==num-1){
@@ -602,8 +604,9 @@ void Two::dealSignal(CardShare p){
         }
     }
 
-    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
 
+
+//    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
     // 地主无需等待，发送后 接收2个
     // 第二位 需要等待一次 再发送 ，再正常等待2次
     // 第三位 直接等待
@@ -627,7 +630,7 @@ void Two::dealSignal(CardShare p){
  * @brief Two::dealClose 窗口关闭线程停止
  */
 void Two::dealClose(){
-    qDebug()<<"dealClose线程："<<QThread::currentThread();
+//    qDebug()<<"dealClose线程："<<QThread::currentThread();
     thread->quit();
     thread->wait();
 }
@@ -708,16 +711,25 @@ void Two::fun3(int line1,int line2)
     ui->lineEdit->setEnabled(false);
     ui->lineEdit_2->setEnabled(false);
 }
+
+
+/**
+ * @brief Two::fun4
+ * @param x 剩余张数
+ * @param y 接受到的编号
+ */
 void Two::fun4(int x,int y)
 {
-    if(x==0)
+    if(x==0)//别人打完牌
     {
-        if(y==diZhuNum){
-        qDebug()<<"失败";
-        }else if(num!=diZhuNum)
+        if(y==diZhuNum)
+        {
+
+            qDebug()<<"获胜"<<endl;
+        }else if(num!=diZhuNum) //收到的不是地主，同时自己也不是地主
         {
             qDebug()<<"获胜"<<endl;
-        }else
+        }else                   //自己是地主
         {
             qDebug()<<"失败"<<endl;
         }

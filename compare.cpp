@@ -69,7 +69,7 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             return false;
         }
 
-        // 5  连牌或者 3+一对
+        // 5  连牌或者 3+一对 顺子
         if(arr2Length==5){
             // 连牌
             if(isConnectSingle(arr1,arr1Length)&&isConnectSingle(arr2,arr2Length)){
