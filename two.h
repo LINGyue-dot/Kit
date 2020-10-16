@@ -33,6 +33,8 @@ public:
     void showTable(CardShare p);// 将牌显示到牌桌中间
     int fun1(int x);
     int fun2(int x);
+    void fun3(int,int);
+    void fun4(int,int);
 
 
 public slots:

@@ -8,7 +8,11 @@
 #include <QTimer>
 #include <stdio.h>
 
-
+int line1;
+int line2;
+QString s1;
+QString s2;
+int vic;
 Two::Two(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Two)
@@ -214,7 +218,17 @@ void Two::on_pushButton_2_clicked()
                 myarray[i]->exist=2;
             }
         }
-
+        vic=0;
+        for (int i=0;i<20 ;i++ ) {
+            if(myarray[i]->exist==1)
+            {
+                vic++;
+            }
+        }
+        if(vic==0)
+        {
+            qDebug()<<"胜利";
+        }
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
     }else{
         // 不出牌
@@ -274,6 +288,12 @@ void Two::on_pushButton_4_clicked(){
 void Two::showTable(CardShare p){
 
     int m=100;
+    int n=0;
+    for(int i=0;i<15;i++)
+    {
+        if(p.cardArr[i]!=0)
+            n++;
+    }
     switch (num) {
     case 1:
         if(p.number==2)
@@ -284,6 +304,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }else if(p.number==3)
         {
             for (int i=0;i<15 ;i++ )
@@ -292,6 +315,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
         }
         break;
     case 2:
@@ -303,6 +329,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
         }else if(p.number==3)
         {
             for (int i=0;i<15 ;i++ )
@@ -311,6 +340,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }
         break;
     case 3:
@@ -321,7 +353,11 @@ void Two::showTable(CardShare p){
                 myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
+
             }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }else if(p.number==2)
         {
             for (int i=0;i<15 ;i++ )
@@ -330,6 +366,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
         }
         break;
     }
@@ -379,6 +418,14 @@ void Two::dealSignal(CardShare p){
         p.number-=10;
         diZhuNum =p.number;
         whichOne =1; //地主第一个出牌
+//        line1=17;
+//        line2=17;
+//        s1=QString::number(line1);
+//        s2=QString::number(line2);
+//        ui->lineEdit->setText(s1);
+//        ui->lineEdit_2->setText(s2);
+//        ui->lineEdit->setEnabled(false);
+//        ui->lineEdit_2->setEnabled(false);
         publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
     }else{
         diZhuNum =p.number/100;
@@ -386,12 +433,77 @@ void Two::dealSignal(CardShare p){
         num=p.number;
         if((diZhuNum)%3==num-1){
             whichOne=2;
+//            line1=17;
+//            line2=17;
+//            s1=QString::number(line1);
+//            s2=QString::number(line2);
+//            ui->lineEdit->setText(s1);
+//            ui->lineEdit_2->setText(s2);
+//            ui->lineEdit->setEnabled(false);
+//            ui->lineEdit_2->setEnabled(false);
         }
         if((diZhuNum+1)%3==num-1){
             whichOne=3;
         }
     }
     num=p.number;
+    switch (num) {
+    case 1:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==2)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+    case 2:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==3)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+    case 3:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==1)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+
+    }
     int b[3];
     for (int i;i<3 ;i++ )
     {
@@ -578,5 +690,29 @@ int Two::fun2(int x)
     }else
     {
         return x-20;
+    }
+}
+void Two::fun3(int line1,int line2)
+{
+    s1=QString::number(line1);
+    s2=QString::number(line2);
+    ui->lineEdit->setText(s1);
+    ui->lineEdit_2->setText(s2);
+    ui->lineEdit->setEnabled(false);
+    ui->lineEdit_2->setEnabled(false);
+}
+void Two::fun4(int x,int y)
+{
+    if(x==0)
+    {
+        if(y==diZhuNum){
+        qDebug()<<"失败";
+        }else if(num!=diZhuNum)
+        {
+            qDebug()<<"获胜";
+        }else
+        {
+            qDebug()<<"失败";
+        }
     }
 }
