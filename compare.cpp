@@ -13,7 +13,7 @@ compare::compare()
 bool compare::isCorrectRule(int *arr){
     int arrLength =returnLength(arr);
     int *value;
-    if(isSingle(arr,arrLength)||isDouble(arr,arrLength)||isThreeNot(arr,arrLength)||
+    if(arrLength==1||isDouble(arr,arrLength)||isThreeNot(arr,arrLength)||
             isThreeTakeSingle(arr,arrLength,value)||isThreeTakeDouble(arr,arrLength,value)||
             isFourTakeTwo(arr,arrLength,value)||isFourTakeTwoDouble(arr,arrLength,value)||
             isConnectSingle(arr,arrLength)||isConnectDouble(arr,arrLength)||isPlaneTakeTwo(arr,arrLength)||
@@ -36,9 +36,7 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
     int arr1Length =returnLength(arr1);
     int arr2Length=returnLength(arr2);
 
-    // 出的牌需要符合规则
-    if(!isCorrectRule(arr2))
-        return false;
+
     // 当 长度不相等时候，除非是炸弹或者王炸要不无法比较
     if(arr1Length!=arr2Length){
         // 牌桌上无牌时候

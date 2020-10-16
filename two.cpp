@@ -177,7 +177,7 @@ void Two::on_pushButton_2_clicked()
     //        for(int i =0;i<20;i++)
     //            qDebug()<<nowCard[i]<<"  ";
 
-    if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
+    if(Compare.isCorrectRule(nowCard)&&((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard)))){
         ui->pushButton_2->hide();
         ui->pushButton_3->hide();
 
