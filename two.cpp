@@ -8,7 +8,11 @@
 #include <QTimer>
 #include <stdio.h>
 
-
+int line1;
+int line2;
+QString s1;
+QString s2;
+int vic;
 Two::Two(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Two)
@@ -155,7 +159,9 @@ void Two::on_pushButton_2_clicked()
     for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
 
-
+    qDebug()<<"158:  p1.cardArr"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<p1.cardArr[i]<<"  ";
     int changeNowCard[20],nowCard[20];
     // nowCard   选中牌的真值数组  p1是选中的假值
     // changeNowCard 是公共的真值   publicCard是公共的假值
@@ -164,7 +170,17 @@ void Two::on_pushButton_2_clicked()
         changeNowCard[x] =fun1(publicCard.cardArr[x]);
     }
     /********************************发送数据到服务器上*************************************/
+    qDebug()<<"167:  changeNowCard"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<changeNowCard[i]<<"  ";
+        qDebug()<<"nowCard"<<endl;
+        for(int i =0;i<20;i++)
+            qDebug()<<nowCard[i]<<"  ";
+
     if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
+        ui->pushButton_2->hide();
+        ui->pushButton_3->hide();
+
         emit sendMessage(p1); //发送数据
         publicCard.number= num;
         for(int i=0;i<20;i++){
@@ -184,7 +200,7 @@ void Two::on_pushButton_2_clicked()
         {
             if(myarray[i]->value==10&&myarray[i]->exist==1)
             {
-                myarray[i]->move(700+k*25,200);
+                myarray[i]->move(700+k*25,500);
                 k=k+1;
                 myarray[i]->exist=0;
                 position[i]=0;
@@ -205,7 +221,17 @@ void Two::on_pushButton_2_clicked()
                 myarray[i]->exist=2;
             }
         }
-
+        vic=0;
+        for (int i=0;i<20 ;i++ ) {
+            if(myarray[i]->exist==1)
+            {
+                vic++;
+            }
+        }
+        if(vic==0)
+        {
+            qDebug()<<"胜利";
+        }
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
     }else{
         // 不出牌
@@ -240,6 +266,8 @@ void Two::on_pushButton_3_clicked()
             myarray[i]->move(x,y+50);
         }
     }
+    ui->pushButton_2->hide();
+    ui->pushButton_3->hide();
     emit sendMessage(publicCard); //发送数据
 }
 
@@ -263,16 +291,25 @@ void Two::on_pushButton_4_clicked(){
 void Two::showTable(CardShare p){
 
     int m=100;
+    int n=0;
+    for(int i=0;i<15;i++)
+    {
+        if(p.cardArr[i]!=0)
+            n++;
+    }
     switch (num) {
     case 1:
         if(p.number==2)
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
+                myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
             }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }else if(p.number==3)
         {
             for (int i=0;i<15 ;i++ )
@@ -281,6 +318,9 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
         }
         break;
     case 2:
@@ -288,18 +328,24 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
-
-                m=m+25;
-            }
-        }else if(p.number==3)
-        {
-            for (int i=0;i<15 ;i++ )
-            {
                 myarray2[i]->setGeometry(200,m,72,141);
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
+        }else if(p.number==3)
+        {
+            for (int i=0;i<15 ;i++ )
+            {
+                myarray2[i]->setGeometry(1100,m,72,141);
+
+                m=m+25;
+            }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }
         break;
     case 3:
@@ -307,18 +353,25 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(1100,m,72,141);
 
                 m=m+25;
+
             }
+            line2=line2-n;
+            fun4(line2,p.number);
+            fun3(line1,line2);
         }else if(p.number==2)
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(700,m,72,141);
+                myarray2[i]->setGeometry(200,m,72,141);
 
                 m=m+25;
             }
+            line1=line1-n;
+            fun4(line1,p.number);
+            fun3(line1,line2);
         }
         break;
     }
@@ -368,18 +421,95 @@ void Two::dealSignal(CardShare p){
         p.number-=10;
         diZhuNum =p.number;
         whichOne =1; //地主第一个出牌
+//        line1=17;
+//        line2=17;
+//        s1=QString::number(line1);
+//        s2=QString::number(line2);
+//        ui->lineEdit->setText(s1);
+//        ui->lineEdit_2->setText(s2);
+//        ui->lineEdit->setEnabled(false);
+//        ui->lineEdit_2->setEnabled(false);
         publicCard.number =p.number; // 刚刚开始出牌的空牌是地主
     }else{
-        diZhuNum =p.number%100;
-        p.number=p.number-(p.number%100)*100;
-        if((diZhuNum+1)%3==num){
+
+        diZhuNum =p.number/100;
+        p.number-=(p.number/100)*100;
+        num=p.number;
+        if((diZhuNum)%3==num-1){
             whichOne=2;
+//            line1=17;
+//            line2=17;
+//            s1=QString::number(line1);
+//            s2=QString::number(line2);
+//            ui->lineEdit->setText(s1);
+//            ui->lineEdit_2->setText(s2);
+//            ui->lineEdit->setEnabled(false);
+//            ui->lineEdit_2->setEnabled(false);
         }
-        if((diZhuNum+2)%3==num){
+
+        if((diZhuNum+1)%3==num-1){
+
             whichOne=3;
         }
     }
     num=p.number;
+    switch (num) {
+    case 1:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==2)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+    case 2:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==3)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+    case 3:
+        if(num==diZhuNum)
+        {
+            line1=17;
+            line2=17;
+            fun3(line1,line2);
+        }else if(diZhuNum==1)
+        {
+            line1=17;
+            line2=20;
+            fun3(line1,line2);
+        }else
+        {
+            line1=20;
+            line2=17;
+            fun3(line1,line2);
+        }
+        break;
+
+    }
     int b[3];
     for (int i;i<3 ;i++ )
     {
@@ -472,7 +602,7 @@ void Two::dealSignal(CardShare p){
         }
     }
 
-    qDebug()<<"475: whichOne is "<<whichOne<<endl;
+    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
 
     // 地主无需等待，发送后 接收2个
     // 第二位 需要等待一次 再发送 ，再正常等待2次
@@ -487,7 +617,6 @@ void Two::dealSignal(CardShare p){
         recvFirst =true;
 
 
-        //
         emit waitRecv();
         ui->pushButton_2->hide();
         ui->pushButton_3->hide();
@@ -527,10 +656,12 @@ void Two::afterGet(CardShare p){
     if(recvFirst){
         emit waitRecv();
         recvFirst =false;
-        // 展示2个按钮 出牌和不出牌
-        ui->pushButton_2->show();
-        ui->pushButton_3->show();
+        return ;
     }
+
+    // 展示2个按钮 出牌和不出牌
+    ui->pushButton_2->show();
+    ui->pushButton_3->show();
 
 
 }
@@ -538,7 +669,7 @@ void Two::afterGet(CardShare p){
 /*************************************线程操作***************************/
 int Two::fun1(int x)
 {
-    if(x>0&&x<20)
+    if(x>=0&&x<20)
     {
         return x;
     }else if(x>20&&x<40)
@@ -566,5 +697,29 @@ int Two::fun2(int x)
     }else
     {
         return x-20;
+    }
+}
+void Two::fun3(int line1,int line2)
+{
+    s1=QString::number(line1);
+    s2=QString::number(line2);
+    ui->lineEdit->setText(s1);
+    ui->lineEdit_2->setText(s2);
+    ui->lineEdit->setEnabled(false);
+    ui->lineEdit_2->setEnabled(false);
+}
+void Two::fun4(int x,int y)
+{
+    if(x==0)
+    {
+        if(y==diZhuNum){
+        qDebug()<<"失败";
+        }else if(num!=diZhuNum)
+        {
+            qDebug()<<"获胜"<<endl;
+        }else
+        {
+            qDebug()<<"失败"<<endl;
+        }
     }
 }
