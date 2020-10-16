@@ -7,6 +7,7 @@
 #include "mylabel.h"
 #include "compare.h"
 #include <QWidget>
+#include <QPainter>
 
 namespace Ui {
 class Two;
@@ -77,6 +78,10 @@ private:
     int firstRecv; //第一次等待需要等待几次
     QLabel *myarray3[3];
     compare Compare;
+
+protected:
+    // 重绘事件
+    void paintEvent(QPaintEvent *event);
 
 };
 

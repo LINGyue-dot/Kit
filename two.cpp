@@ -41,6 +41,9 @@ Two::Two(QWidget *parent) :
     ui->lineEdit_3->hide();
     ui->lineEdit_4->hide();
     ui->lineEdit_5->hide();
+    ui->lineEdit_3->setEnabled(false);
+    ui->lineEdit_4->setEnabled(false);
+    ui->lineEdit_5->setEnabled(false);
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
     myarray[2]=ui->label_3;
@@ -95,7 +98,7 @@ Two::Two(QWidget *parent) :
     myarray[0]->hide();
     for (int i=1;i<20 ;i++ )
     {
-        myarray[i]->setGeometry(m+25,n,72,141);
+        myarray[i]->setGeometry(m+25,n,90,150);
         myarray[i]->hide();
         position[i]=m+25;
         m=m+25;
@@ -135,6 +138,17 @@ Two::Two(QWidget *parent) :
 
 
 }
+
+/**
+ * @brief One::paintEvent 绘图设置背景图片
+ * @param event
+ */
+void Two::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.drawPixmap(0,0,width(),height(),QPixmap("../Kit/image/bg.jpg"));	//传入资源图片路径
+}
+
 
 Two::~Two()
 {
@@ -204,7 +218,7 @@ void Two::on_pushButton_2_clicked()
         {
             if(myarray[i]->value==10&&myarray[i]->exist==1)
             {
-                myarray[i]->move(700+k*25,500);
+                myarray[i]->move(700+k*25,450);
                 k=k+1;
                 myarray[i]->exist=0;
                 position[i]=0;
@@ -218,7 +232,7 @@ void Two::on_pushButton_2_clicked()
                 {
                     if(myarray[j]->exist==1)
                     {
-                        myarray[j]->move(position[j]-25,650);
+                        myarray[j]->move(position[j]-25,680);
                         position[j]=position[j]-25;
                     }
                 }
@@ -232,6 +246,7 @@ void Two::on_pushButton_2_clicked()
                 vic++;
             }
         }
+        qDebug()<<"vic:"<<vic<<endl;
         if(vic==0)
         {
             qDebug()<<"胜利"<<endl;
@@ -246,7 +261,7 @@ void Two::on_pushButton_2_clicked()
                 myarray[i]->value=100;
                 int x=myarray[i]->x();
                 int y=myarray[i]->y();
-                myarray[i]->move(x,y+50);
+                myarray[i]->move(x,y+35);
             }
         }
 
@@ -267,7 +282,7 @@ void Two::on_pushButton_3_clicked()
             myarray[i]->value=100;
             int x=myarray[i]->x();
             int y=myarray[i]->y();
-            myarray[i]->move(x,y+50);
+            myarray[i]->move(x,y+35);
         }
     }
     ui->pushButton_2->hide();
@@ -334,9 +349,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(1100,m,72,141);
+                myarray2[i]->setGeometry(1200,m,90,150);
 
-                m=m+25;
+                m=m+35;
             }
             qDebug()<<"327 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
@@ -346,9 +361,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(200,m,90,150);
 
-                m=m+25;
+                m=m+35;
             }
             qDebug()<<"339 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
@@ -361,9 +376,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(200,m,90,150);
 
-                m=m+25;
+                m=m+35;
             }
 
             qDebug()<<"355 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
@@ -374,9 +389,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(1100,m,72,141);
+                myarray2[i]->setGeometry(1200,m,90,150);
 
-                m=m+25;
+                m=m+35;
             }
             qDebug()<<"367 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
@@ -389,9 +404,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(1100,m,72,141);
+                myarray2[i]->setGeometry(1200,m,90,150);
 
-                m=m+25;
+                m=m+35;
 
             }
             qDebug()<<"383 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
@@ -402,9 +417,9 @@ void Two::showTable(CardShare p){
         {
             for (int i=0;i<15 ;i++ )
             {
-                myarray2[i]->setGeometry(200,m,72,141);
+                myarray2[i]->setGeometry(200,m,90,150);
 
-                m=m+25;
+                m=m+35;
             }
             qDebug()<<"395 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
@@ -695,6 +710,7 @@ void Two::dealSignal(CardShare p){
             myarray3[i-17]->setPixmap(map3);
             myarray3[i-17]->show();
             myarray[i]->hide();
+            myarray[i]->exist=0;
         }
     }
 

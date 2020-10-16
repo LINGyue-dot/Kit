@@ -12,13 +12,13 @@ void mylabel::mousePressEvent(QMouseEvent *e)
     {
         if(exist==1)
         {
-            this->move(x,y-50);
+            this->move(x,y-35);
             value=10;
         }
     }else
     {
         if(exist==1){
-            this->move(x,y+50);
+            this->move(x,y+35);
             value=100;
         }
     }

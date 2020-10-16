@@ -9,7 +9,9 @@ compare::compare()
  */
 bool compare::isCorrectRule(int *arr){
     int arrLength =returnLength(arr);
-    int *value;
+    int nnnn=0;
+    int *value=&nnnn;
+
     if(arrLength==1||isDouble(arr,arrLength)||isThreeNot(arr,arrLength)||
             isThreeTakeSingle(arr,arrLength,value)||isThreeTakeDouble(arr,arrLength,value)||
             isFourTakeTwo(arr,arrLength,value)||isFourTakeTwoDouble(arr,arrLength,value)||
@@ -339,15 +341,19 @@ bool compare::isConnectSingle(int *arr,int length){
 bool compare::isConnectDouble(int*arr,int length){
     if(length<6)
         return false;
-    int content=0;
+    int content=1;
     if(arr[0]!=arr[1])
         return false;
-    for(int i =2;i<length;i=i+2){
-        if((arr[i]==arr[i+1] )&&( arr[i]==arr[i-1]-1))
+    int temp=2;
+    for(int i =3;i<length;i=temp+1){
+        if((arr[i]==arr[temp] )&&( arr[i]==arr[temp-1]-1)){
             content++;
+            temp=i+1;
+
+        }
         else {
             content=0;
-            break;
+            return false;
         }
     }
     if(content>=3)
@@ -368,7 +374,7 @@ bool compare::isPlaneTakeNot(int *arr,int length){
     while(end<length){
         if(!isArrEqual(arr,begin,end))
             return false;
-        begin++;
+        begin=end+1;
         end=begin+2;
     }
     return true;
