@@ -5,6 +5,25 @@ compare::compare()
 
 }
 
+/**
+ * @brief compare::isCorrectRule 出牌是否符合规则
+ * @param arr
+ * @return
+ */
+bool compare::isCorrectRule(int *arr){
+    int arrLength =returnLength(arr);
+    int *value;
+    if(isSingle(arr,arrLength)||isDouble(arr,arrLength)||isThreeNot(arr,arrLength)||
+            isThreeTakeSingle(arr,arrLength,value)||isThreeTakeDouble(arr,arrLength,value)||
+            isFourTakeTwo(arr,arrLength,value)||isFourTakeTwoDouble(arr,arrLength,value)||
+            isConnectSingle(arr,arrLength)||isConnectDouble(arr,arrLength)||isPlaneTakeTwo(arr,arrLength)||
+            isPlaneTakeDouble(arr,arrLength)||isBoom(arr,arrLength)||isKingBoom(arr,arrLength))
+        return true;
+    else
+        return false;
+}
+
+
 
 
 /**
@@ -16,6 +35,10 @@ compare::compare()
 bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
     int arr1Length =returnLength(arr1);
     int arr2Length=returnLength(arr2);
+
+    // 出的牌需要符合规则
+    if(!isCorrectRule(arr2))
+        return false;
     // 当 长度不相等时候，除非是炸弹或者王炸要不无法比较
     if(arr1Length!=arr2Length){
         // 牌桌上无牌时候
@@ -32,7 +55,7 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
         int arr1Value=0;
         int arr2Value=0;
         // 1 张
-                if(arr2Length ==1 && arr2[0]>arr1[0])
+        if(arr2Length ==1 && arr2[0]>arr1[0])
                     return true;
         // 2 对子
         if(arr2Length==2&&arr2[0]==arr2[1]){
@@ -279,6 +302,9 @@ bool compare::isThreeTakeDouble(int*arr,int length,int *value){
  * @return
  */
 bool compare::isFourTakeTwo(int*arr,int length,int *value){
+    if(length!=6)
+        return false;
+
     if(isArrEqual(arr,0,3)){
         *value = arr[0];
         return true;
@@ -299,6 +325,8 @@ bool compare::isFourTakeTwo(int*arr,int length,int *value){
  * @return
  */
 bool compare::isFourTakeTwoDouble(int *arr,int length,int *value){
+    if(length!=8)
+        return false;
     // 100 010 001
     //1 00
     if(isArrEqual(arr,0,3)&&isArrEqual(arr,4,5)&&isArrEqual(arr,6,7)){
@@ -324,6 +352,8 @@ bool compare::isFourTakeTwoDouble(int *arr,int length,int *value){
 * @return
 */
 bool compare::isConnectSingle(int *arr,int length){
+    if(length<5)
+        return false;
     if(arr[length-1]>11)
         return false;
     int i=1;
@@ -341,6 +371,8 @@ bool compare::isConnectSingle(int *arr,int length){
 * @return
 */
 bool compare::isConnectDouble(int*arr,int length){
+    if(length<6)
+        return false;
     int content=0;
     if(arr[0]!=arr[1])
         return false;
@@ -366,6 +398,8 @@ bool compare::isConnectDouble(int*arr,int length){
 * @return
 */
 bool compare::isPlaneTakeTwo(int * arr,int length){
+    if(length<8)
+        return false;
     int begin =0;
     int end =begin+2;
     int planeContent=0;
@@ -402,6 +436,8 @@ bool compare::isPlaneTakeTwo(int * arr,int length){
 * @return
 */
 bool compare::isPlaneTakeDouble(int *arr,int length){
+    if(length<10)
+        return false;
     int begin =0;
     int end =begin+2;
     int planeContent=0;

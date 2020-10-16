@@ -159,9 +159,9 @@ void Two::on_pushButton_2_clicked()
     for(int x =number;x<20;x++)
         p1.cardArr[x]=0;
 
-//    qDebug()<<"158:  p1.cardArr"<<endl;
-//        for(int i =0;i<20;i++)
-//            qDebug()<<p1.cardArr[i]<<"  ";
+    //    qDebug()<<"158:  p1.cardArr"<<endl;
+    //        for(int i =0;i<20;i++)
+    //            qDebug()<<p1.cardArr[i]<<"  ";
     int changeNowCard[20],nowCard[20];
     // nowCard   选中牌的真值数组  p1是选中的假值
     // changeNowCard 是公共的真值   publicCard是公共的假值
@@ -170,12 +170,12 @@ void Two::on_pushButton_2_clicked()
         changeNowCard[x] =fun1(publicCard.cardArr[x]);
     }
     /********************************发送数据到服务器上*************************************/
-//    qDebug()<<"167:  changeNowCard"<<endl;
-//        for(int i =0;i<20;i++)
-//            qDebug()<<changeNowCard[i]<<"  ";
-//        qDebug()<<"nowCard"<<endl;
-//        for(int i =0;i<20;i++)
-//            qDebug()<<nowCard[i]<<"  ";
+    //    qDebug()<<"167:  changeNowCard"<<endl;
+    //        for(int i =0;i<20;i++)
+    //            qDebug()<<changeNowCard[i]<<"  ";
+    //        qDebug()<<"nowCard"<<endl;
+    //        for(int i =0;i<20;i++)
+    //            qDebug()<<nowCard[i]<<"  ";
 
     if((publicCard.number == num)||(Compare.arr1Bigerarr2(changeNowCard,nowCard))){
         ui->pushButton_2->hide();
@@ -292,7 +292,10 @@ void Two::showTable(CardShare p){
 
     int m=100;
 
-    if(num==p.number)//别人都不出的情况
+    for(int i=0;i<15;i++)
+    {
+
+        if(num==p.number)//别人都不出的情况
         {
             for(int i=0;i<15;i++)
             {
@@ -300,21 +303,27 @@ void Two::showTable(CardShare p){
             }
             return;
         }
+    }
 
 
-
-    int n=0;
+    int n=0;// 记牌器
     for(int i=0;i<15;i++)
     {
-
-        if(publicCard.cardArr[i]==p.cardArr[i]  &&p.number==publicCard.number)
-        {
-            n=0;
-            continue;
-        }
         if(p.cardArr[i]!=0)
             n++;
     }
+
+
+    int flag =0; //p.arr是否与公共牌一致
+
+    for(flag=0;flag<15;flag++){
+        // 别的玩家不出牌 计数器不变化
+        if(publicCard.cardArr[flag]!=p.cardArr[flag]  ||p.number!=publicCard.number)
+            break;
+    }
+    if(flag ==15)         // 当 p arr 与公共拍一致时候
+        n=0;
+
     switch (num) {
     case 1:
         if(p.number==2)
@@ -325,6 +334,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"327 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -336,6 +346,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"339 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
@@ -350,6 +361,8 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+
+            qDebug()<<"355 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
@@ -361,6 +374,7 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"367 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -376,6 +390,7 @@ void Two::showTable(CardShare p){
                 m=m+25;
 
             }
+            qDebug()<<"383 : line2: "<<line2<<" n"<<n<<"++++++++++++"<<endl;
             line2=line2-n;
             fun4(line2,p.number);
             fun3(line1,line2);
@@ -387,18 +402,19 @@ void Two::showTable(CardShare p){
 
                 m=m+25;
             }
+            qDebug()<<"395 : line1: "<<line1<<" n"<<n<<"++++++++++++"<<endl;
             line1=line1-n;
             fun4(line1,p.number);
             fun3(line1,line2);
         }
         break;
     }
-//    for (int i=0;i<15 ;i++ )
-//    {
-//        myarray2[i]->setGeometry(200,m,72,141);
+    //    for (int i=0;i<15 ;i++ )
+    //    {
+    //        myarray2[i]->setGeometry(200,m,72,141);
 
-//        m=m+25;
-//    }
+    //        m=m+25;
+    //    }
     for(int i=0;i<15;i++)
     {
         if(p.cardArr[i]==0)
@@ -606,7 +622,7 @@ void Two::dealSignal(CardShare p){
 
 
 
-//    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
+    //    qDebug()<<"475 : whichOne is "<<whichOne<<endl;
     // 地主无需等待，发送后 接收2个
     // 第二位 需要等待一次 再发送 ，再正常等待2次
     // 第三位 直接等待
@@ -630,7 +646,7 @@ void Two::dealSignal(CardShare p){
  * @brief Two::dealClose 窗口关闭线程停止
  */
 void Two::dealClose(){
-//    qDebug()<<"dealClose线程："<<QThread::currentThread();
+    //    qDebug()<<"dealClose线程："<<QThread::currentThread();
     thread->quit();
     thread->wait();
 }

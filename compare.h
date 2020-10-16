@@ -19,6 +19,9 @@ public:
     // 长度大于等于7 连对或者连牌，飞机带数量级单牌（单牌不连续），飞机带数量级个对子（可以不连续）， 4带2对
     compare();
 
+    // 出牌是否符合规则
+    bool isCorrectRule(int *arr);
+
     // 比较arr1和arr2的大小，如果arr1大 就return true
     bool arr1Bigerarr2(int arr1[],int arr2[]);
 
