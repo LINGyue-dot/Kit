@@ -36,7 +36,11 @@ Two::Two(QWidget *parent) :
         s[13]=":/pukeimage1\\2.jpg";
         s[14]=":/pukeimage1\\1.jpg";
     }
-
+    ui->lineEdit->hide();
+    ui->lineEdit_2->hide();
+    ui->lineEdit_3->hide();
+    ui->lineEdit_4->hide();
+    ui->lineEdit_5->hide();
     myarray[0]=ui->label;
     myarray[1]=ui->label_2;
     myarray[2]=ui->label_3;
@@ -477,16 +481,40 @@ void Two::dealSignal(CardShare p){
         {
             line1=17;
             line2=17;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("地主");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else if(diZhuNum==2)
         {
             line1=17;
             line2=20;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("地主");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else
         {
             line1=20;
             line2=17;
+            ui->lineEdit_3->setText("地主");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }
         break;
@@ -495,16 +523,40 @@ void Two::dealSignal(CardShare p){
         {
             line1=17;
             line2=17;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("地主");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else if(diZhuNum==3)
         {
             line1=17;
             line2=20;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("地主");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else
         {
             line1=20;
             line2=17;
+            ui->lineEdit_3->setText("地主");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }
         break;
@@ -513,16 +565,42 @@ void Two::dealSignal(CardShare p){
         {
             line1=17;
             line2=17;
+            line1=17;
+            line2=17;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("地主");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else if(diZhuNum==1)
         {
             line1=17;
             line2=20;
+            ui->lineEdit_3->setText("农民");
+            ui->lineEdit_4->setText("地主");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }else
         {
             line1=20;
             line2=17;
+            ui->lineEdit_3->setText("地主");
+            ui->lineEdit_4->setText("农民");
+            ui->lineEdit_5->setText("农民");
+            ui->lineEdit->show();
+            ui->lineEdit_2->show();
+            ui->lineEdit_3->show();
+            ui->lineEdit_4->show();
+            ui->lineEdit_5->show();
             fun3(line1,line2);
         }
         break;

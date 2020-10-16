@@ -41,6 +41,7 @@ private:
     bool isFourTakeTwoDouble(int *arr,int length,int*value); // 4带一对
     bool isConnectSingle(int *arr,int length);// 连牌
     bool isConnectDouble(int *arr, int length); // 连对
+    bool isPlaneTakeNot(int *arr,int length); //飞机不带
     bool isPlaneTakeTwo(int *arr,int length); // 飞机带单牌
     bool isPlaneTakeDouble(int *arr,int length); //飞机带对子
     bool isBoom(int *arr,int length); //炸弹

@@ -1,10 +1,7 @@
 #include "compare.h"
-
 compare::compare()
 {
-
 }
-
 /**
  * @brief compare::isCorrectRule 出牌是否符合规则
  * @param arr
@@ -17,15 +14,12 @@ bool compare::isCorrectRule(int *arr){
             isThreeTakeSingle(arr,arrLength,value)||isThreeTakeDouble(arr,arrLength,value)||
             isFourTakeTwo(arr,arrLength,value)||isFourTakeTwoDouble(arr,arrLength,value)||
             isConnectSingle(arr,arrLength)||isConnectDouble(arr,arrLength)||isPlaneTakeTwo(arr,arrLength)||
-            isPlaneTakeDouble(arr,arrLength)||isBoom(arr,arrLength)||isKingBoom(arr,arrLength))
+            isPlaneTakeDouble(arr,arrLength)||isBoom(arr,arrLength)||isKingBoom(arr,arrLength)||
+            isPlaneTakeNot(arr,arrLength))
         return true;
     else
         return false;
 }
-
-
-
-
 /**
  * @brief compare::arr1Bigerarr2 比较arr1和arr2的大小，如果arr1大 就return true
  * @param arr1  牌桌上的牌
@@ -35,8 +29,6 @@ bool compare::isCorrectRule(int *arr){
 bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
     int arr1Length =returnLength(arr1);
     int arr2Length=returnLength(arr2);
-
-
     // 当 长度不相等时候，除非是炸弹或者王炸要不无法比较
     if(arr1Length!=arr2Length){
         // 牌桌上无牌时候
@@ -47,7 +39,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             return true;
         return false;
     }
-
     // 长度相等时候比较, 先对规则
     if(arr1Length==arr2Length){
         int arr1Value=0;
@@ -62,7 +53,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             else
                 return false;
         }
-
         // 3 3不带
         if(arr2Length==3&&arr2[0]==arr2[1]==arr2[2]){
             if(arr2[0]>arr1[0])
@@ -70,7 +60,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             else
                 return false;
         }
-
         //  4  可能是3+1  或者炸弹
         if(arr2Length==4){
             // 都为3+1
@@ -89,7 +78,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             }
             return false;
         }
-
         // 5  连牌或者 3+一对 顺子
         if(arr2Length==5){
             // 连牌
@@ -108,8 +96,7 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
             }
             return false;
         }
-
-        // 6 连牌 连对   4带2张单  4带一对
+        // 6 连牌 连对   4带2张单  4带一对 飞机
         if(arr2Length==6){
             // 连牌
             if(isConnectSingle(arr1,arr1Length)&&isConnectSingle(arr2,arr2Length)){
@@ -125,7 +112,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
             // 4带2张
             if(isFourTakeTwo(arr1,arr1Length,&arr1Value)&&isFourTakeTwo(arr2,arr2Length,&arr2Value)){
                 if(arr1Value<arr2Value)
@@ -133,10 +119,15 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
+            // 飞机
+            if(isPlaneTakeNot(arr1,arr1Length)&&isPlaneTakeNot(arr2,arr2Length)){
+                if(arr1[0]<arr2[0])
+                    return true;
+                else
+                    return false;
+            }
             return false;
         }
-
         // 大于等于7  连对  连牌
         //飞机带数量级单牌（可以不连续），飞机带数量级对子（可以不连续）
         // 4 带2对
@@ -148,7 +139,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
             // 连牌
             if(isConnectSingle(arr1,arr1Length)&&isConnectSingle(arr2,arr2Length)){
                 if(arr1Length<arr2Length)
@@ -156,7 +146,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
             // 飞机带数量级对子
             if(isPlaneTakeDouble(arr1,arr1Length)&&isPlaneTakeDouble(arr2,arr2Length)){
                 if(arr1[0]<arr2[0])
@@ -164,7 +153,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
             //飞机带数量级单牌
             if(isPlaneTakeTwo(arr1,arr1Length)&&isPlaneTakeTwo(arr2,arr2Length)){
                 if(arr1[0]<arr2[0])
@@ -172,10 +160,16 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
-
             // 4带 2个对子，对子没有限制
             if(isFourTakeTwoDouble(arr1,arr1Length,&arr1Value)&&isFourTakeTwoDouble(arr2,arr2Length,&arr2Value)){
                 if(arr1Value<arr2Value)
+                    return true;
+                else
+                    return false;
+            }
+            // 飞机
+            if(isPlaneTakeNot(arr1,arr1Length)&&isPlaneTakeNot(arr2,arr2Length)){
+                if(arr1[0]<arr2[0])
                     return true;
                 else
                     return false;
@@ -185,10 +179,6 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
     }
     return true;
 }
-
-
-
-
 /**
  * @brief compare::returnLength 返回数组长度
  * @param arr
@@ -203,8 +193,6 @@ int compare::returnLength(int *arr){
     }
     return length;
 }
-
-
 /**
  * @brief compare::isArrEqual 判断数组在一定长度内是否相等
  * @param arr
@@ -220,12 +208,7 @@ bool compare::isArrEqual(int arr[],int begin,int end){
     }
     return flag;
 }
-
-
-
 /**********************************规则判断****************************************/
-
-
 /**
  * @brief compare::isDouble 是否为对子
  * @param arr
@@ -238,7 +221,6 @@ bool compare::isDouble(int *arr,int length){
     else
         return true;
 }
-
 /**
  * @brief compare::isThreeNot 3不带
  * @param arr
@@ -251,8 +233,6 @@ bool compare::isThreeNot(int *arr,int length){
     else
         return true;
 }
-
-
 /**
  * @brief compare::isThreeTakeSingle 3+1
  * @param arr
@@ -270,8 +250,6 @@ bool compare::isThreeTakeSingle(int *arr,int length,int *value){
     }
     return false;
 }
-
-
 /**
  * @brief compare::isThreeTakeTwo 3+一对
  * @param arr
@@ -291,8 +269,6 @@ bool compare::isThreeTakeDouble(int*arr,int length,int *value){
     }
     return false;
 }
-
-
 /**
  * @brief isFourTakeSingle 4+2单张
  * @param arr
@@ -302,7 +278,6 @@ bool compare::isThreeTakeDouble(int*arr,int length,int *value){
 bool compare::isFourTakeTwo(int*arr,int length,int *value){
     if(length!=6)
         return false;
-
     if(isArrEqual(arr,0,3)){
         *value = arr[0];
         return true;
@@ -313,9 +288,6 @@ bool compare::isFourTakeTwo(int*arr,int length,int *value){
     }
     return false;
 }
-
-
-
 /**
  * @brief compare::isFourTakeTwoDouble 4+2对子
  * @param arr
@@ -341,10 +313,8 @@ bool compare::isFourTakeTwoDouble(int *arr,int length,int *value){
     }
     return false;
 }
-
-
 /**
-* @brief compare::isConnectSingle 连牌只能和连牌，飞机只能和飞机比
+* @brief compare::isConnectSingle 连牌
 * @param arr
 * @param length 至少5张连续 3-K -A (1--11)
 * @return
@@ -352,16 +322,14 @@ bool compare::isFourTakeTwoDouble(int *arr,int length,int *value){
 bool compare::isConnectSingle(int *arr,int length){
     if(length<5)
         return false;
-    if(arr[length-1]>11)
+    if(arr[length-1]>13)
         return false;
-    int i=1;
-    for(int j=1;j<length;j++,i++){
-        if(arr[j-1]!=arr[j]-1)
+    for(int j=1;j<length;j++){
+        if(arr[j-1]!=arr[j]+1)
             return false;
     }
     return true;
 }
-
 /**
 * @brief compare::isConnectDouble 连对
 * @param arr
@@ -375,7 +343,7 @@ bool compare::isConnectDouble(int*arr,int length){
     if(arr[0]!=arr[1])
         return false;
     for(int i =2;i<length;i=i+2){
-        if((arr[i]==arr[i+1] )&&( arr[i]==arr[i-1]+1))
+        if((arr[i]==arr[i+1] )&&( arr[i]==arr[i-1]-1))
             content++;
         else {
             content=0;
@@ -386,9 +354,25 @@ bool compare::isConnectDouble(int*arr,int length){
         return true;
     return false;
 }
-
-
-
+/**
+ * @brief compare::isPlaneTakeNot 飞机不带
+ * @param arr
+ * @param length
+ * @return
+ */
+bool compare::isPlaneTakeNot(int *arr,int length){
+    if(length<6||length%3!=0)
+        return false;
+    int begin =0;
+    int end=begin+2;
+    while(end<length){
+        if(!isArrEqual(arr,begin,end))
+            return false;
+        begin++;
+        end=begin+2;
+    }
+    return true;
+}
 /**
 * @brief compare::isPlaneTakeTwo 飞机带单牌 (会包含isPlaneDouble)
 * @param arr
@@ -402,11 +386,20 @@ bool compare::isPlaneTakeTwo(int * arr,int length){
     int end =begin+2;
     int planeContent=0;
     int single =0;
+    int beginNumber=-1;
     int flag=0; // 开始3张牌
     while (end<length) {
         if(isArrEqual(arr,begin,end)){
             if(flag==-1)
                 return false;
+            if(beginNumber==-1){ // 第一个
+                beginNumber=arr[begin];
+            }else{ // 不是第一个时候
+                if(beginNumber-1!=arr[begin])
+                    return false;
+                else
+                    beginNumber =arr[begin];
+            }
             flag=1;
             begin+=3;
             planeContent++;
@@ -423,10 +416,6 @@ bool compare::isPlaneTakeTwo(int * arr,int length){
     else
         return false;
 }
-
-
-
-
 /**
 * @brief compare::isPlaneTakeDouble 飞机带对子
 * @param arr
@@ -440,11 +429,20 @@ bool compare::isPlaneTakeDouble(int *arr,int length){
     int end =begin+2;
     int planeContent=0;
     int doubles =0;
+    int beginNumber =-1;
     int flag=0; // 开始3张牌
     while (end<length) {
         if(isArrEqual(arr,begin,end)){
             if(flag==-1)
                 return false;
+            if(beginNumber==-1){ // 第一个
+                beginNumber=arr[begin];
+            }else{ // 不是第一个时候
+                if(beginNumber-1!=arr[begin])
+                    return false;
+                else
+                    beginNumber =arr[begin];
+            }
             flag=1;
             begin+=3;
             planeContent++;
@@ -463,12 +461,6 @@ bool compare::isPlaneTakeDouble(int *arr,int length){
     else
         return false;
 }
-
-
-
-
-
-
 /**
 * @brief compare::isBoom 炸弹
 * @param arr
@@ -484,8 +476,6 @@ bool compare::isBoom(int *arr,int length){
     }
     return true;
 }
-
-
 /**
 * @brief compare::isKingBoom 王炸
 * @param arr
@@ -498,18 +488,6 @@ bool compare::isKingBoom(int *arr,int length){
     else
         return false;
 }
-
-
-
-
-
 /**********************************规则判断****************************************/
-
-
-
-
-
 /**************************************************************/
-
-
 /**************************************************************/
