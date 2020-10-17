@@ -7,6 +7,7 @@
 #include <QThread>
 #include <QTimer>
 #include <stdio.h>
+#include<Qpropertyanimation>
 
 int line1;
 int line2;
@@ -88,6 +89,9 @@ Two::Two(QWidget *parent) :
     }
     ui->pushButton_2->hide();
     ui->pushButton_3->hide();
+    ui->label_39->hide();
+    ui->label_40->hide();
+    ui->label_41->hide();
     for(int i=0;i<15;i++)
     {
         myarray2[i]->hide();
@@ -106,7 +110,20 @@ Two::Two(QWidget *parent) :
         publicCard.cardArr[i]=0;
     }
 
-
+    //============================创建胜利图片==========================================
+//    QLabel *winLabel=new QLabel;
+    QPixmap tmpPix;
+    tmpPix.load(":/pukeimage1\\1.jpg");
+    winLabelVictory->setGeometry(0,0,tmpPix.width(),tmpPix.height());
+    winLabelVictory->setPixmap(tmpPix);
+    winLabelVictory->setParent(this);
+    winLabelVictory->move((this->width()-tmpPix.width())*0.5,-tmpPix.height());
+    QPixmap tmpPix2;
+    tmpPix2.load(":/pukeimage1\\2.jpg");
+    winLabelDefault->setGeometry(0,0,tmpPix2.width(),tmpPix2.height());
+    winLabelDefault->setPixmap(tmpPix2);
+    winLabelDefault->setParent(this);
+    winLabelDefault->move((this->width()-tmpPix2.width())*0.5,-tmpPix2.height());
 
 
     //================================载入图片=========================================//0
@@ -250,6 +267,12 @@ void Two::on_pushButton_2_clicked()
         if(vic==0)
         {
             qDebug()<<"胜利"<<endl;
+            QPropertyAnimation *anmationl=new QPropertyAnimation(winLabelVictory,"geometry");
+            anmationl->setDuration(1000);
+            anmationl->setStartValue(QRect(winLabelVictory->x(),winLabelVictory->y(),winLabelVictory->width(),winLabelVictory->height()));
+            anmationl->setEndValue(QRect(winLabelVictory->x(),winLabelVictory->y()+400,winLabelVictory->width(),winLabelVictory->height()));
+            anmationl->setEasingCurve(QEasingCurve::OutBounce);
+            anmationl->start();
         }
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
     }else{
@@ -467,6 +490,7 @@ void Two::showTable(CardShare p){
  */
 void Two::dealSignal(CardShare p){
     // 显示数据
+
     qDebug()<<"dealSignal的数据为：p.cardArr[16]:  "<<(p).cardArr[16]<<endl;
     int temp =17;
     if(p.number>=10&&p.number<100){// 判断是否为地主,如果不是地主的话 则在百位表示地主是哪个玩家的编号
@@ -505,6 +529,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character/dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_39->setPixmap(pixmapdi);
+            int hdi=ui->label_39->height();
+            int wdi=ui->label_39->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapdi);
+            ui->label_39->show();
+
+            QImage imagenong;
+            imagenong.load(":/character/nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }else if(diZhuNum==2)
         {
             line1=17;
@@ -518,6 +564,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character/dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_41->setPixmap(pixmapdi);
+            int hdi=ui->label_41->height();
+            int wdi=ui->label_41->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_41->setPixmap(mapdi);
+            ui->label_41->show();
+
+            QImage imagenong;
+            imagenong.load(":/character/nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
         }else
         {
             line1=20;
@@ -531,6 +599,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_40->setPixmap(pixmapdi);
+            int hdi=ui->label_40->height();
+            int wdi=ui->label_40->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapdi);
+            ui->label_40->show();
+
+            QImage imagenong;
+            imagenong.load(":/character/nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_39->setPixmap(pixmapnong);
+            int hnong=ui->label_39->height();
+            int wnong=ui->label_39->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }
         break;
     case 2:
@@ -547,6 +637,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_39->setPixmap(pixmapdi);
+            int hdi=ui->label_39->height();
+            int wdi=ui->label_39->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapdi);
+            ui->label_39->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }else if(diZhuNum==3)
         {
             line1=17;
@@ -560,6 +672,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_41->setPixmap(pixmapdi);
+            int hdi=ui->label_41->height();
+            int wdi=ui->label_41->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_41->setPixmap(mapdi);
+            ui->label_41->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
         }else
         {
             line1=20;
@@ -573,13 +707,33 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_40->setPixmap(pixmapdi);
+            int hdi=ui->label_40->height();
+            int wdi=ui->label_40->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapdi);
+            ui->label_40->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_39->setPixmap(pixmapnong);
+            int hnong=ui->label_39->height();
+            int wnong=ui->label_39->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }
         break;
     case 3:
         if(num==diZhuNum)
         {
-            line1=17;
-            line2=17;
             line1=17;
             line2=17;
             ui->lineEdit_3->setText("农民");
@@ -591,6 +745,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_39->setPixmap(pixmapdi);
+            int hdi=ui->label_39->height();
+            int wdi=ui->label_39->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapdi);
+            ui->label_39->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }else if(diZhuNum==1)
         {
             line1=17;
@@ -604,6 +780,28 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_41->setPixmap(pixmapdi);
+            int hdi=ui->label_41->height();
+            int wdi=ui->label_41->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_41->setPixmap(mapdi);
+            ui->label_41->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_40->setPixmap(pixmapnong);
+            int hnong=ui->label_40->height();
+            int wnong=ui->label_40->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapnong);
+            ui->label_40->show();
+
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
         }else
         {
             line1=20;
@@ -617,12 +815,34 @@ void Two::dealSignal(CardShare p){
             ui->lineEdit_4->show();
             ui->lineEdit_5->show();
             fun3(line1,line2);
+            QImage imagedi;
+            imagedi.load(":/character\\dz.jpg");
+            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+            ui->label_40->setPixmap(pixmapdi);
+            int hdi=ui->label_40->height();
+            int wdi=ui->label_40->width();
+            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_40->setPixmap(mapdi);
+            ui->label_40->show();
+
+            QImage imagenong;
+            imagenong.load(":/character\\nong.jpg");
+            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+            ui->label_39->setPixmap(pixmapnong);
+            int hnong=ui->label_39->height();
+            int wnong=ui->label_39->width();
+            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+            ui->label_39->setPixmap(mapnong);
+            ui->label_39->show();
+
+            ui->label_41->setPixmap(mapnong);
+            ui->label_41->show();
         }
         break;
 
     }
     int b[3];
-    for (int i;i<3 ;i++ )
+    for (int i=0;i<3 ;i++ )
     {
         b[i]=p.cardArr[i+17];
     }
@@ -694,6 +914,28 @@ void Two::dealSignal(CardShare p){
             myarray3[i-17]->show();
             myarray[i]->show();
 
+//            QImage imagedi;
+//            imagedi.load(":/image/dz.jpg");
+//            QPixmap pixmapdi=QPixmap::fromImage(imagedi);
+//            ui->label_39->setPixmap(pixmapdi);
+//            int hdi=ui->label_39->height();
+//            int wdi=ui->label_39->width();
+//            QPixmap mapdi=pixmapdi.scaled(wdi,hdi,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+//            ui->label_39->setPixmap(mapdi);
+//            ui->label_39->show();
+
+//            QImage imagenong;
+//            imagenong.load(":/image/nong.jpg");
+//            QPixmap pixmapnong=QPixmap::fromImage(imagenong);
+//            ui->label_40->setPixmap(pixmapnong);
+//            int hnong=ui->label_40->height();
+//            int wnong=ui->label_40->width();
+//            QPixmap mapnong=pixmapnong.scaled(wnong,hnong,Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
+//            ui->label_40->setPixmap(mapnong);
+//            ui->label_40->show();
+
+//            ui->label_41->setPixmap(mapnong);
+//            ui->label_41->show();
             // 2个按钮显示
             ui->pushButton_2->show();
             ui->pushButton_3->show();
@@ -835,13 +1077,37 @@ void Two::fun4(int x,int y)
         if(y==diZhuNum)
         {
 
-            qDebug()<<"获胜"<<endl;
+            qDebug()<<"失败"<<endl;
+            QPropertyAnimation *anmationl=new QPropertyAnimation(winLabelDefault,"geometry");
+            anmationl->setDuration(1000);
+            anmationl->setStartValue(QRect(winLabelDefault->x(),winLabelDefault->y(),winLabelDefault->width(),winLabelDefault->height()));
+            anmationl->setEndValue(QRect(winLabelDefault->x(),winLabelDefault->y()+400,winLabelDefault->width(),winLabelDefault->height()));
+            anmationl->setEasingCurve(QEasingCurve::OutBounce);
+            anmationl->start();
+            ui->pushButton_2->setEnabled(false);
+            ui->pushButton_3->setEnabled(false);
         }else if(num!=diZhuNum) //收到的不是地主，同时自己也不是地主
         {
             qDebug()<<"获胜"<<endl;
+            QPropertyAnimation *anmationl=new QPropertyAnimation(winLabelVictory,"geometry");
+            anmationl->setDuration(1000);
+            anmationl->setStartValue(QRect(winLabelVictory->x(),winLabelVictory->y(),winLabelVictory->width(),winLabelVictory->height()));
+            anmationl->setEndValue(QRect(winLabelVictory->x(),winLabelVictory->y()+400,winLabelVictory->width(),winLabelVictory->height()));
+            anmationl->setEasingCurve(QEasingCurve::OutBounce);
+            anmationl->start();
+            ui->pushButton_2->setEnabled(false);
+            ui->pushButton_3->setEnabled(false);
         }else                   //自己是地主
         {
             qDebug()<<"失败"<<endl;
+            QPropertyAnimation *anmationl=new QPropertyAnimation(winLabelDefault,"geometry");
+            anmationl->setDuration(1000);
+            anmationl->setStartValue(QRect(winLabelDefault->x(),winLabelDefault->y(),winLabelDefault->width(),winLabelDefault->height()));
+            anmationl->setEndValue(QRect(winLabelDefault->x(),winLabelDefault->y()+400,winLabelDefault->width(),winLabelDefault->height()));
+            anmationl->setEasingCurve(QEasingCurve::OutBounce);
+            anmationl->start();
+            ui->pushButton_2->setEnabled(false);
+            ui->pushButton_3->setEnabled(false);
         }
     }
 }

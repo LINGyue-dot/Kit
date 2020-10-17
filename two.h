@@ -79,6 +79,9 @@ private:
     QLabel *myarray3[3];
     compare Compare;
 
+      QLabel *winLabelVictory=new QLabel;
+      QLabel *winLabelDefault=new QLabel;
+
 protected:
     // 重绘事件
     void paintEvent(QPaintEvent *event);

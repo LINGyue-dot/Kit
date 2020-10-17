@@ -609,6 +609,45 @@
     </rect>
    </property>
   </widget>
+  <widget class="QLabel" name="label_39">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>680</y>
+     <width>90</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>人物1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_40">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>90</y>
+     <width>90</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>人物2</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_41">
+   <property name="geometry">
+    <rect>
+     <x>1330</x>
+     <y>90</y>
+     <width>90</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>人物3</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
