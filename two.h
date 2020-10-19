@@ -8,6 +8,7 @@
 #include "compare.h"
 #include <QWidget>
 #include <QPainter>
+#include<utils.h>
 
 namespace Ui {
 class Two;
@@ -32,10 +33,9 @@ public:
     ~Two();
 
     void showTable(CardShare p);// 将牌显示到牌桌中间
-    int fun1(int x);
-    int fun2(int x);
-    void fun3(int,int);
-    void fun4(int,int);
+    void resultJudge(int,int);
+    void imageImport();
+
 
 
 public slots:
@@ -79,8 +79,24 @@ private:
     QLabel *myarray3[3];
     compare Compare;
 
-      QLabel *winLabelVictory=new QLabel;
-      QLabel *winLabelDefault=new QLabel;
+      QLabel *winLabel=new QLabel;
+      QLabel *defLabel=new QLabel;
+
+      int line1;
+      int line2;
+      QString s1;
+      QString s2;
+      int vic;
+
+      void showButton();
+      void hideButton();
+      void banButton();
+      void pictureResult(QLabel);
+     void surCard(int,int);
+     void uiBand();
+     void showLine();
+     void startHide();
+
 
 protected:
     // 重绘事件

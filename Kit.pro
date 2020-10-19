@@ -16,6 +16,7 @@ SOURCES += \
     one.cpp \
     socket.cpp \
     two.cpp \
+    utils.cpp \
     widget.cpp
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     one.h \
     socket.h \
     two.h \
+    utils.h \
     widget.h
 
 FORMS += \
