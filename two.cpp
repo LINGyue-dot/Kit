@@ -41,13 +41,13 @@ Two::Two(QWidget *parent) :
     //============================创建胜利图片==========================================
     //    QLabel *winLabel=new QLabel;
     QPixmap tmpPix;
-    tmpPix.load(":/pukeimage1\\1.jpg");
+    tmpPix.load(":/result\\win.jpg");
     winLabel->setGeometry(0,0,tmpPix.width(),tmpPix.height());
     winLabel->setPixmap(tmpPix);
     winLabel->setParent(this);
     winLabel->move((this->width()-tmpPix.width())*0.5,-tmpPix.height());
     QPixmap tmpPix2;
-    tmpPix2.load(":/pukeimage1\\2.jpg");
+    tmpPix2.load(":/result\\def.jpg");
     defLabel->setGeometry(0,0,tmpPix2.width(),tmpPix2.height());
     defLabel->setPixmap(tmpPix2);
     defLabel->setParent(this);
@@ -185,7 +185,7 @@ void Two::on_pushButton_2_clicked()
         {
             qDebug()<<"胜利"<<endl;
             utils::pictureResult(winLabel);
-            //出牌成功音效
+
             QSound *jer=new QSound(":/zai/new1.wav",this);
             jer->play();
         }
@@ -214,8 +214,9 @@ void Two::on_pushButton_2_clicked()
  */
 void Two::on_pushButton_3_clicked()
 {
-    QSound *me=new QSound(":/zai\\new.wav",this);
+    QSound *me=new QSound(":/zai\\buyao1.wav",this);
     me->play();
+    hideButton();
     for (int i=0;i<20 ;i++ )
 
     {
@@ -227,7 +228,7 @@ void Two::on_pushButton_3_clicked()
             myarray[i]->move(x,y+35);
         }
     }
-    hideButton();
+
     emit sendMessage(publicCard); //发送数据
 }
 
@@ -678,16 +679,22 @@ void Two::resultJudge(int x, int y)
         {
 
             qDebug()<<"失败"<<endl;
-            utils::pictureResult(winLabel);
+            QSound *di=new QSound(":/zai\\dif.wav",this);
+            di->play();
+            utils::pictureResult(defLabel);
             banButton();
         }else if(num!=diZhuNum) //收到的不是地主，同时自己也不是地主
         {
             qDebug()<<"获胜"<<endl;
+            QSound *vic=new QSound(":/zai\\vic.wav",this);
+            vic->play();
             utils::pictureResult(winLabel);
             banButton();
         }else                   //自己是地主
         {
             qDebug()<<"失败"<<endl;
+            QSound *dif=new QSound(":/zai\\dif.wav",this);
+            dif->play();
             utils::pictureResult(defLabel);
             banButton();
 

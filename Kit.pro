@@ -46,4 +46,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     MP3.qrc \
     character.qrc \
-    res.qrc
+    res.qrc \
+    result.qrc

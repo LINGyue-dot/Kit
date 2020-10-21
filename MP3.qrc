@@ -10,5 +10,8 @@
         <file>new1.wav</file>
         <file>111.aac</file>
         <file>333.wav</file>
+        <file>buyao1.wav</file>
+        <file>vic.wav</file>
+        <file>dif.wav</file>
     </qresource>
 </RCC>

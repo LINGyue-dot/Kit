@@ -37,7 +37,7 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
         if(arr1Length==0)
             return true;
         // 要出的是王炸 , 牌桌上不是炸弹，而出的是
-        if(isKingBoom(arr2,arr2Length)||(!isBoom(arr1,arr1Length)&&isBoom(arr2,arr2Length)))
+        if(isKingBoom(arr2,arr2Length)||(!isBoom(arr1,arr1Length)&&!isKingBoom(arr1,arr1Length)&&isBoom(arr2,arr2Length)))
             return true;
         return false;
     }
@@ -78,6 +78,10 @@ bool compare::arr1Bigerarr2(int arr1[],int arr2[]){
                 else
                     return false;
             }
+
+            // 3+1 boom
+            if(isThreeTakeSingle(arr1,arr1Length,&arr1Value)&&isBoom(arr2,arr2Length))
+                return true;
             return false;
         }
         // 5  连牌或者 3+一对 顺子
