@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui multimedia
 LIBS += -lpthread libwsock32 libws2_32
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -44,5 +44,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    MP3.qrc \
     character.qrc \
     res.qrc

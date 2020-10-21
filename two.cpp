@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <stdio.h>
 #include<Qpropertyanimation>
+#include<QSound>
 
 
 Two::Two(QWidget *parent) :
@@ -184,10 +185,15 @@ void Two::on_pushButton_2_clicked()
         {
             qDebug()<<"胜利"<<endl;
             utils::pictureResult(winLabel);
+            //出牌成功音效
+            QSound *jer=new QSound(":/zai/new1.wav",this);
+            jer->play();
         }
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
     }else{
-        // 不出牌
+        // 不出牌  不出牌音效
+        QSound *lin=new QSound(":/zai/new1.wav",this);
+        lin->play();
         for (int i=0;i<20 ;i++ )
         {
             if(myarray[i]->value==10&&myarray[i]->exist==1)
@@ -208,6 +214,8 @@ void Two::on_pushButton_2_clicked()
  */
 void Two::on_pushButton_3_clicked()
 {
+    QSound *me=new QSound(":/zai\\new.wav",this);
+    me->play();
     for (int i=0;i<20 ;i++ )
 
     {
@@ -229,6 +237,10 @@ void Two::on_pushButton_3_clicked()
  */
 void Two::on_pushButton_4_clicked(){
     // 启动线程,开始游戏
+    QSound *start1=new QSound(":/zai\\new.wav",this);
+    start1->play();
+    QSound *start=new QSound(":/zai\\333.wav",this);
+    start->play();
     thread->start();
     emit startThread(); // 发射信号 调用connect
     ui->pushButton_4->hide();

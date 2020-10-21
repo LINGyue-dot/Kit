@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/zai">
+        <file>6407.wav</file>
+        <file>start.wav</file>
+        <file>chupai.wav</file>
+        <file>7869.wav</file>
+        <file>chupai1.mp3</file>
+        <file>233.wav</file>
+        <file>new.wav</file>
+        <file>new1.wav</file>
+        <file>111.aac</file>
+        <file>333.wav</file>
+    </qresource>
+</RCC>
