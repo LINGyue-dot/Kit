@@ -90,7 +90,7 @@ Two::Two(QWidget *parent) :
 void Two::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-    painter.drawPixmap(0,0,width(),height(),QPixmap("../Kit/image/bg.jpg"));	//传入资源图片路径
+    painter.drawPixmap(0,0,width(),height(),QPixmap(":/23wKit/image/bg.jpg"));	//传入资源图片路径
 }
 
 
@@ -141,7 +141,6 @@ void Two::on_pushButton_2_clicked()
 
         /*****************************开始移动牌到牌桌且 隐藏之前的*********************************************/
         int k=0;
-        int m=0;
         for (int i=0;i<20 ;i++ ) {
             if(myarray[i]->exist==2)
                 myarray[i]->hide();

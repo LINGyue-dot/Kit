@@ -6,7 +6,6 @@
 #include"Struct.h"
 #include <QDebug>
 
-
 using namespace std;
 
 class Socket
